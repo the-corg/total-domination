@@ -8,6 +8,7 @@ namespace TotalDomination.ViewModel
     public class TodoViewModel : BaseViewModel
     {
         private Todo _model;
+        private bool _isDone;
 
         public TodoViewModel(Todo model)
         {
@@ -51,13 +52,23 @@ namespace TotalDomination.ViewModel
         /// </summary>
         public DateOnly? LastDone
         {
-            get => _model.LastDone;
+            get => _model.DoneDates.LastOrDefault();
             set
             {
-                if (value == _model.LastDone)
+                if (value == _model.DoneDates.LastOrDefault())
                     return;
 
-                _model.LastDone = value;
+                if (value is null)
+                {
+                    if (_model.DoneDates.Count > 0)
+                    {
+                        _model.DoneDates.RemoveAt(_model.DoneDates.Count - 1);
+                    }
+                }
+                else
+                {
+                    _model.DoneDates.Add((DateOnly)value);
+                }
                 OnPropertyChanged();
             }
         }
@@ -65,12 +76,20 @@ namespace TotalDomination.ViewModel
         /// <summary>
         /// Shows whether the To do item was done today
         /// </summary>
-        public bool IsDone { get; set; }
+        public bool IsDone
+        {
+            get => _isDone;
+            set
+            {
+                if (value == _isDone)
+                    return;
 
-        /// <summary>
-        /// Shows whether the To do item is present in the current todo list
-        /// </summary>
-        public bool IsActive { get; set; }
+                _isDone = value;
+                OnPropertyChanged();
+                // TODO : Change LastDone and call OnPropertyChanged too
+            }
+        }
+
 
 
     }

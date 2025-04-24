@@ -2,13 +2,14 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
 
-    <!-- Forest green and its friends -->
     <SolidColorBrush Color="#228b22" x:Key="ForestGreen"/>
     <SolidColorBrush Color="#d2691e" x:Key="BurntOrange"/>
     <SolidColorBrush Color="#ffb90f" x:Key="Gold"/>
     <SolidColorBrush Color="#8a9a5b" x:Key="PaleOlive"/>
     <SolidColorBrush Color="#3c2f2f" x:Key="ReddishBrown"/>
     <SolidColorBrush Color="#090707" x:Key="VeryDarkGrey"/>
+
+    <SolidColorBrush Color="#5F8a9a5b" x:Key="SemiTransparent"/>
 
     <!-- Gradient for background -->
     <LinearGradientBrush StartPoint="0.5 0" EndPoint="0.5 1" x:Key="BackgroundGradient">

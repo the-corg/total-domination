@@ -58,6 +58,17 @@
         </Grid>
 
         <!-- Content -->
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <DockPanel>
+                <TextBlock Text="{Binding SelectedFile}"/>
+                <Button Content="Open task list file"/>
+            </DockPanel>
+        </Grid>
         
 
     </Grid>
