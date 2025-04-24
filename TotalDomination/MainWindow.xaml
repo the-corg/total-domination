@@ -5,8 +5,58 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TotalDomination"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="ToDo" Height="512" Width="512"
+        MinHeight="256" MinWidth="256"
+        WindowStartupLocation="CenterScreen"
+        StateChanged="Window_StateChanged"
+        FontSize="24" FontFamily="Segoe UI"
+        SnapsToDevicePixels="True"
+        Loaded="MainWindow_Loaded"
+        Background="{StaticResource BackgroundGradient}">
+
+    <WindowChrome.WindowChrome>
+        <!-- Nonzero GlassFrameThickness provides a dropshadow for the window -->
+        <WindowChrome GlassFrameThickness="0 0.001 0 0" CornerRadius="0" 
+                      ResizeBorderThickness="7" CaptionHeight="{StaticResource TitleBarHeight}" />
+    </WindowChrome.WindowChrome>
+
+    <!-- Commands for Title Bar buttons -->
+    <Window.CommandBindings>
+        <CommandBinding Command="{x:Static SystemCommands.CloseWindowCommand}" Executed="CommandBinding_CloseExecuted"/>
+        <CommandBinding Command="{x:Static SystemCommands.MaximizeWindowCommand}" Executed="CommandBinding_MaximizeExecuted"/>
+        <CommandBinding Command="{x:Static SystemCommands.RestoreWindowCommand}" Executed="CommandBinding_RestoreExecuted"/>
+        <CommandBinding Command="{x:Static SystemCommands.MinimizeWindowCommand}" Executed="CommandBinding_MinimizeExecuted"/>
+    </Window.CommandBindings>
+
+    <!-- Main Window Grid -->
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height ="Auto"/>
+            <RowDefinition Height ="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Window Title Bar -->
+        <Grid Height="{StaticResource TitleBarHeight}">
+            <TextBlock Text="Title" Foreground="White" FontSize="22" Margin="10 2 0 0"/>
+
+            <!--Caption buttons-->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Content="🗕" Style="{StaticResource TitleBarButton}"
+                        Command="{x:Static SystemCommands.MinimizeWindowCommand}"/>
+                <Button Content="🗗" Style="{StaticResource TitleBarButton}"
+                        Command="{x:Static SystemCommands.RestoreWindowCommand}" 
+                        Visibility="Collapsed" x:Name="RestoreButton"/>
+                <Button Content="🗖" Style="{StaticResource TitleBarButton}"
+                        Command="{x:Static SystemCommands.MaximizeWindowCommand}"
+                        Visibility="Visible" x:Name="MaximizeButton"/>
+                <Button Content="❌" Style="{StaticResource TitleBarButton}"
+                        Command="{x:Static SystemCommands.CloseWindowCommand}"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- Content -->
+        
 
     </Grid>
+
 </Window>
