@@ -3,20 +3,25 @@
 namespace TotalDomination.ViewModel
 {
     /// <summary>
-    /// View model for a single To do item
+    /// View model for a single To-do item
     /// </summary>
     public class TodoViewModel : BaseViewModel
     {
+        #region Private fields
+
         private Todo _model;
         private bool _isDone;
+
+        #endregion
 
         public TodoViewModel(Todo model)
         {
             _model = model;
         }
 
+        #region Public properties 
         /// <summary>
-        /// Title of the To do item
+        /// Title of the To-do item
         /// </summary>
         public string Title
         {
@@ -32,7 +37,7 @@ namespace TotalDomination.ViewModel
         }
 
         /// <summary>
-        /// Frequency of the To do item
+        /// Frequency of the To-do item
         /// </summary>
         public int Frequency
         {
@@ -48,7 +53,7 @@ namespace TotalDomination.ViewModel
         }
 
         /// <summary>
-        /// The date when the To do item was last marked as done
+        /// The date when the To-do item was last marked as done
         /// </summary>
         public DateOnly? LastDone
         {
@@ -74,7 +79,7 @@ namespace TotalDomination.ViewModel
         }
 
         /// <summary>
-        /// Shows whether the To do item was done today
+        /// Shows whether the To-do item was done today
         /// </summary>
         public bool IsDone
         {
@@ -89,8 +94,7 @@ namespace TotalDomination.ViewModel
                 // TODO : Change LastDone and call OnPropertyChanged too
             }
         }
-
-
+        #endregion
 
     }
 }

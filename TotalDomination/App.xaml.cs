@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
+using TotalDomination.Data;
 using TotalDomination.ViewModel;
 
 namespace TotalDomination
@@ -23,8 +24,9 @@ namespace TotalDomination
         {
             services.AddSingleton<MainWindow>();
 
-            // View Models
             services.AddSingleton<MainViewModel>();
+
+            services.AddTransient<FileManager>();
 
         }
         #endregion

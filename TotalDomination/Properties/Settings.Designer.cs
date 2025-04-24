@@ -22,5 +22,17 @@ namespace TotalDomination.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string TodoListFile {
+            get {
+                return ((string)(this["TodoListFile"]));
+            }
+            set {
+                this["TodoListFile"] = value;
+            }
+        }
     }
 }

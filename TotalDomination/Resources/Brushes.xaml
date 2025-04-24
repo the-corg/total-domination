@@ -6,16 +6,26 @@
     <SolidColorBrush Color="#d2691e" x:Key="BurntOrange"/>
     <SolidColorBrush Color="#ffb90f" x:Key="Gold"/>
     <SolidColorBrush Color="#8a9a5b" x:Key="PaleOlive"/>
-    <SolidColorBrush Color="#3c2f2f" x:Key="ReddishBrown"/>
-    <SolidColorBrush Color="#090707" x:Key="VeryDarkGrey"/>
+
+    <SolidColorBrush Color="#afc0f0" x:Key="7_SuperLightBlue"/>
+    <SolidColorBrush Color="#6d8de3" x:Key="6_VeryLightBlue"/>
+    <SolidColorBrush Color="#2b5ad6" x:Key="5_LightBlue"/>
+    <SolidColorBrush Color="#1a3786" x:Key="4_MediumBlue"/>
+    <SolidColorBrush Color="#0d1c44" x:Key="3_DarkBlue"/>
+    <SolidColorBrush Color="#070e23" x:Key="2_VeryDarkBlue"/>
+    <SolidColorBrush Color="#040813" x:Key="1_SuperDarkBlue"/>
+    <SolidColorBrush Color="#8e8e9f" x:Key="TitleBarGray"/>
+
+    <SolidColorBrush Color="#e36d8d" x:Key="TitleRed"/>
+    <SolidColorBrush Color="#6de38d" x:Key="TitleGreen"/>
 
     <SolidColorBrush Color="#5F8a9a5b" x:Key="SemiTransparent"/>
 
     <!-- Gradient for background -->
     <LinearGradientBrush StartPoint="0.5 0" EndPoint="0.5 1" x:Key="BackgroundGradient">
-        <GradientStop Color="#090707" Offset="0.0" />
-        <GradientStop Color="#3c2f2f" Offset="0.5" />
-        <GradientStop Color="#090707" Offset="1.0" />
+        <GradientStop Color="#000000" Offset="0.0" />
+        <GradientStop Color="#0d1c44" Offset="0.5" />
+        <GradientStop Color="#000000" Offset="1.0" />
     </LinearGradientBrush>
     
 

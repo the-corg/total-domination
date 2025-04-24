@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TotalDomination"
         mc:Ignorable="d"
-        Title="ToDo" Height="512" Width="512"
+        Title="To-do" Height="512" Width="512"
         MinHeight="256" MinWidth="256"
         WindowStartupLocation="CenterScreen"
         StateChanged="Window_StateChanged"
@@ -37,13 +37,20 @@
 
         <!-- Window Title Bar -->
         <Grid Height="{StaticResource TitleBarHeight}">
-            <TextBlock Foreground="DarkGray" FontSize="22" Margin="10 2 0 0">
-                <Run Text="To" Foreground="CornflowerBlue" FontWeight="Bold"/><Run Text="tal"/>
-                <Run Text="Do" Foreground="LightGreen" FontWeight="Bold"/><Run Text="mination"/>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Foreground="{StaticResource TitleBarGray}" FontSize="{StaticResource TitleBarFontSize}" Margin="10 2 0 0">
+                <Run Text="To" Foreground="{StaticResource TitleRed}" FontWeight="Bold"/><Run Text="tal"/>
+                <Run Text="Do" Foreground="{StaticResource TitleGreen}" FontWeight="Bold"/><Run Text="mination"/>
             </TextBlock>
 
+            
             <!--Caption buttons-->
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+            <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Content="{Binding TodoFileName}" Style="{StaticResource OpenFileButton}"
+                        Command="{Binding SelectFileCommand}"/>
                 <Button Content="🗕" Style="{StaticResource TitleBarButton}"
                         Command="{x:Static SystemCommands.MinimizeWindowCommand}"/>
                 <Button Content="🗗" Style="{StaticResource TitleBarButton}"
@@ -58,16 +65,21 @@
         </Grid>
 
         <!-- Content -->
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="1" Margin="10">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
-            <DockPanel>
-                <TextBlock Text="{Binding SelectedFile}"/>
-                <Button Content="Open task list file"/>
-            </DockPanel>
+            <ListBox>
+                <ListBoxItem Content="Item 1"/>
+                <ListBoxItem Content="Item 1"/>
+                <ListBoxItem Content="Item 1"/>
+                <ListBoxItem Content="Item 1"/>
+            </ListBox>
+
+
+
         </Grid>
         
 

@@ -8,7 +8,7 @@ namespace TotalDomination.Data
     public class FileManager
     {
 
-        #region Select Todo list file
+        #region Select To-do list file
 
         const string _filterTxt = "Text files (*.txt)|*.txt";
         const string _filterAll = "All files (*.*)|*";
@@ -21,7 +21,7 @@ namespace TotalDomination.Data
         {
             var dialog = new OpenFileDialog
             {
-                Title = "Select the pipe-delimited text file with your To do list",
+                Title = "Select the pipe-delimited text file with your To-do list",
                 Filter = _filterTxt + "|" + _filterAll
             };
 

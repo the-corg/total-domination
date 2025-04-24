@@ -11,16 +11,17 @@
     <!-- Title bar styles -->
     <Style TargetType="Button" x:Key="TitleBarButton">
         <Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Foreground" Value="{StaticResource TitleBarGray}"/>
         <Setter Property="BorderBrush" Value="Transparent"/>
         <Setter Property="Width" Value="{StaticResource TitleBarHeight}"/>
         <Setter Property="Height" Value="{StaticResource TitleBarHeight}"/>
-        <Setter Property="FontSize" Value="20"/>
+        <Setter Property="FontSize" Value="{StaticResource TitleBarFontSize}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
-                    <Border Background="{TemplateBinding Background}">
+                    <Border Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}">
                         <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Border>
                 </ControlTemplate>
@@ -29,11 +30,28 @@
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="Background" Value="{StaticResource BurntOrange}"/>
-                <Setter Property="Foreground" Value="{StaticResource VeryDarkGrey}"/>
+                <Setter Property="Foreground" Value="{StaticResource 1_SuperDarkBlue}"/>
             </Trigger>
             <Trigger Property="IsPressed" Value="True">
-                <Setter Property="Background" Value="{StaticResource PaleOlive}"/>
-                <Setter Property="Foreground" Value="{StaticResource VeryDarkGrey}"/>
+                <Setter Property="Background" Value="{StaticResource 4_MediumBlue}"/>
+                <Setter Property="Foreground" Value="{StaticResource 1_SuperDarkBlue}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="Button" x:Key="OpenFileButton" BasedOn="{StaticResource TitleBarButton}">
+        <Setter Property="Padding" Value="5 2"/>
+        <Setter Property="Width" Value="Auto"/>
+        <Setter Property="FontWeight" Value="Light"/>
+        <Setter Property="Foreground" Value="{StaticResource 6_VeryLightBlue}"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{StaticResource Gold}"/>
+                <Setter Property="Foreground" Value="{StaticResource 1_SuperDarkBlue}"/>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="{StaticResource 4_MediumBlue}"/>
+                <Setter Property="Foreground" Value="{StaticResource 1_SuperDarkBlue}"/>
             </Trigger>
         </Style.Triggers>
     </Style>
