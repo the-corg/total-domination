@@ -37,7 +37,10 @@
 
         <!-- Window Title Bar -->
         <Grid Height="{StaticResource TitleBarHeight}">
-            <TextBlock Text="Title" Foreground="White" FontSize="22" Margin="10 2 0 0"/>
+            <TextBlock Foreground="DarkGray" FontSize="22" Margin="10 2 0 0">
+                <Run Text="To" Foreground="CornflowerBlue" FontWeight="Bold"/><Run Text="tal"/>
+                <Run Text="Do" Foreground="LightGreen" FontWeight="Bold"/><Run Text="mination"/>
+            </TextBlock>
 
             <!--Caption buttons-->
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
