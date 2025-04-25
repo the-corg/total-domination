@@ -100,7 +100,7 @@ namespace TotalDomination.Utilities
 
             if (currentTime.Hour < Settings.Default.NewDayStart)
             {
-                today.AddDays(-1);
+                return today.AddDays(-1);
             }
 
             return today;

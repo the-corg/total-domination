@@ -21,6 +21,9 @@ namespace TotalDomination.ViewModel
         {
             _model = model;
             _calculations = calculations;
+
+            if (_model.DoneDates.Count > 0)
+                _isDone = Calculations.GetTodayWithMidnightShift() == _model.DoneDates.Last();
         }
         #endregion
 
@@ -29,18 +32,7 @@ namespace TotalDomination.ViewModel
         /// <summary>
         /// Title of the To-do item
         /// </summary>
-        public string Title
-        {
-            get => _model.Title;
-            set
-            {
-                if (value == _model.Title)
-                    return;
-
-                _model.Title = value;
-                OnPropertyChanged();
-            }
-        }
+        public string Title => _model.Title;
 
         /// <summary>
         /// Fires in front of the To-do item (when it's long overdue) 
@@ -65,49 +57,47 @@ namespace TotalDomination.ViewModel
         /// <summary>
         /// Frequency of the To-do item
         /// </summary>
-        public int Frequency
-        {
-            get => _model.Frequency;
-            set
-            {
-                if (value == _model.Frequency)
-                    return;
-
-                _model.Frequency = value;
-                OnPropertyChanged();
-            }
-        }
+        public int Frequency => _model.Frequency;
 
         /// <summary>
-        /// The date when the To-do item was last marked as done
+        /// The date when the to-do item was first loaded from a To-do list file
         /// </summary>
-        public DateOnly? LastDone
-        {
-            get => _model.DoneDates.LastOrDefault();
-            set
-            {
-                if (value == _model.DoneDates.LastOrDefault())
-                    return;
+        public DateOnly Added => _model.Added;
 
-                if (value is null)
+        /// <summary>
+        /// The dates on which the to-do item was done
+        /// </summary>
+        public List<DateOnly> DoneDates => _model.DoneDates;
+
+        /// <summary>
+        /// The date when the To-do item was last marked as done (or day of adding, if never)
+        /// </summary>
+        public DateOnly LastDone
+        {
+            get
+            {
+                var count = _model.DoneDates.Count;
+                if (count > 0)
                 {
-                    if (_model.DoneDates.Count > 0)
+                    if (IsDone)
                     {
-                        _model.DoneDates.RemoveAt(_model.DoneDates.Count - 1);
+                        if (count > 1)
+                            return _model.DoneDates[count - 2];
+                    }
+                    else
+                    {
+                        return _model.DoneDates.Last();
                     }
                 }
-                else
-                {
-                    _model.DoneDates.Add((DateOnly)value);
-                }
-                OnPropertyChanged();
+
+                return _model.Added;
             }
         }
 
         /// <summary>
         /// Number of days since the to-do item was last done (0 = today, 1 = yesterday)
         /// </summary>
-        public int DaysSinceDone { get; set; } // TODO: This should be calculated based on LastDone date (or added, if new)
+        public int DaysSinceDone => Calculations.GetTodayWithMidnightShift().DayNumber - LastDone.DayNumber;
 
         /// <summary>
         /// Shows whether the To-do item was done today
@@ -122,7 +112,23 @@ namespace TotalDomination.ViewModel
 
                 _isDone = value;
                 OnPropertyChanged();
-                // TODO : Change LastDone and call OnPropertyChanged too
+
+                if (value)
+                {
+                    // CheckBox was selected
+                    _model.DoneDates.Add(Calculations.GetTodayWithMidnightShift());
+                }
+                else
+                {
+                    // CheckBox was unselected
+                    int count = _model.DoneDates.Count;
+                    if (count > 0)
+                    {
+                        _model.DoneDates.RemoveAt(count - 1);
+                    }
+                }
+
+                // TODO : Call OnPropertyChanged? or just sort the list? sort using ListCollectionView?
             }
         }
 

@@ -12,6 +12,7 @@
         FontSize="24" FontFamily="Segoe UI"
         SnapsToDevicePixels="True"
         Loaded="MainWindow_Loaded"
+        Closing="MainWindow_Closing"
         Background="{StaticResource BackgroundGradient}"
         Icon="Assets\IconWindow.ico">
 
@@ -66,7 +67,7 @@
 
         
         <!-- Content -->
-        <ListBox Grid.Row="1" ItemsSource="{Binding Todos}">
+        <ListBox Grid.Row="1" ItemsSource="{Binding TodoListCollectionView}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <CheckBox IsChecked="{Binding IsDone, Mode=TwoWay}">

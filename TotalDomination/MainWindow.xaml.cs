@@ -9,20 +9,12 @@ namespace TotalDomination
     /// </summary>
     public partial class MainWindow : Window
     {
-        #region Constructor and initializer
+        #region Constructor and private fields 
+        private bool _readyToBeClosed = false;
 
         public MainWindow()
         {
             InitializeComponent();
-        }
-
-        // Calls the view model's initializer
-        private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
-        {
-            if (DataContext is MainViewModel mainViewModel)
-            {
-                await mainViewModel.InitializeAsync();
-            }
         }
         #endregion
 
@@ -66,5 +58,35 @@ namespace TotalDomination
         }
         #endregion
 
+        #region Handlers for major events 
+
+        // Calls the view model's initializer
+        private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is MainViewModel mainViewModel)
+            {
+                await mainViewModel.InitializeAsync();
+            }
+        }
+
+        // Saves data on exit
+        private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (_readyToBeClosed)
+                return; // Closes the window
+
+            e.Cancel = true; // Cancel closing for now
+            Hide(); // Hide the window immediately
+
+            if (DataContext is MainViewModel mainViewModel)
+            {
+                mainViewModel.SaveData();
+            }
+
+            // Now really close the window
+            _readyToBeClosed = true;
+            Close();
+        }
+        #endregion
     }
 }

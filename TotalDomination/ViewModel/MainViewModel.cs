@@ -1,6 +1,8 @@
 ﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
 using System.Windows;
+using System.Windows.Data;
 using TotalDomination.Data;
 using TotalDomination.Model;
 using TotalDomination.Properties;
@@ -27,7 +29,7 @@ namespace TotalDomination.ViewModel
 
         #endregion
 
-        #region Constructor and Initializer
+        #region Constructor, Initializer and SaveData
 
         public MainViewModel(FileManager fileManager, Calculations calculations)
         {
@@ -36,6 +38,12 @@ namespace TotalDomination.ViewModel
 
             SelectFileCommand = new DelegateCommand(async execute => await SelectFileAsync());
             DoneCommand = new DelegateCommand(Done);
+
+            // Create list collection view for the list of to-do items and assign sorting to it
+            TodoListCollectionView = new ListCollectionView(Todos);
+            TodoListCollectionView.SortDescriptions.Add(new SortDescription("IsDone", ListSortDirection.Ascending));
+            TodoListCollectionView.SortDescriptions.Add(new SortDescription("DaysSinceDone", ListSortDirection.Descending));
+            TodoListCollectionView.SortDescriptions.Add(new SortDescription("Frequency", ListSortDirection.Descending));
         }
 
         /// <summary>
@@ -62,6 +70,14 @@ namespace TotalDomination.ViewModel
             }
 
         }
+
+        /// <summary>
+        /// Saves the list of to-do items 
+        /// </summary>
+        public async void SaveData()
+        {
+            await _fileManager.SaveCompleteListAsync(_completeList);
+        }
         #endregion
 
 
@@ -71,6 +87,11 @@ namespace TotalDomination.ViewModel
         /// The list of to-do items 
         /// </summary>
         public ObservableCollection<TodoViewModel> Todos { get; set; } = new();
+        /// <summary>
+        /// The collection view for the list of to-do items
+        /// </summary>
+        public ListCollectionView TodoListCollectionView { get; }
+
 
         /// <summary>
         /// Name of the To-do list file
@@ -127,6 +148,9 @@ namespace TotalDomination.ViewModel
 
                     CanCelebrate = false; // That's it. Enough celebrating
                 }
+
+                SaveData();
+                TodoListCollectionView.Refresh();
             }
         }
         #endregion
@@ -142,26 +166,28 @@ namespace TotalDomination.ViewModel
             bool completeListChanged = false;
 
             // Add anything that's new to the complete list
-            foreach (var todo in _currentList)
+            for (int i = 0; i < _currentList.Count; i++)
             {
-                var matchingTodo = _completeList.FirstOrDefault(x => (x.FileName == todo.FileName) && (x.Title == todo.Title));
+                var matchingTodo = _completeList.FirstOrDefault(x => (x.FileName == _currentList[i].FileName) && (x.Title == _currentList[i].Title));
 
                 if (matchingTodo is not null)
                 {
                     // There's already such a to-do item in the complete list
-                    todo.Added = matchingTodo.Added;
-                    todo.DoneDates = matchingTodo.DoneDates;
 
-                    if (matchingTodo.Frequency != todo.Frequency)
+                    // Update frequency, if needed
+                    if (matchingTodo.Frequency != _currentList[i].Frequency)
                     {
-                        matchingTodo.Frequency = todo.Frequency;
+                        matchingTodo.Frequency = _currentList[i].Frequency;
                         completeListChanged = true;
                     }
+
+                    // Set the reference to the object from the complete list
+                    _currentList[i] = matchingTodo;
                 }
                 else
                 {
                     // This to-do item is new
-                    _completeList.Add(todo);
+                    _completeList.Add(_currentList[i]);
                     completeListChanged = true;
                 }
             }
@@ -175,13 +201,13 @@ namespace TotalDomination.ViewModel
             _calculations.TotalFrequency = _currentList.Sum(x => x.Frequency);
 
             // Create todo view models
-            var todoViewModels = _currentList.Select(x => new TodoViewModel(x, _calculations)).
-                ToList().OrderBy(x => -x.DaysSinceDone).ThenBy(x => -x.Frequency);
+            var todoViewModels = _currentList.Select(x => new TodoViewModel(x, _calculations)).ToList();
 
             Todos.Clear();
             foreach (var t in todoViewModels)
                 Todos.Add(t);
         }
+
         #endregion
 
     }
