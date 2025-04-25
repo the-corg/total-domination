@@ -1,7 +1,4 @@
-﻿
-using System.Diagnostics;
-
-namespace TotalDomination.Data
+﻿namespace TotalDomination.Data
 {
     /// <summary>
     /// Performs calculations, e.g., for color interpolation 
@@ -59,16 +56,13 @@ namespace TotalDomination.Data
 
             if (days > TotalFrequency)
             {
-                // For urgency tier 1
+                // Urgency tier 1
                 days = 2 * TotalFrequency - daysSinceDone + 2;
             }
 
-            // -(x-3)^2 + 9, where x changes from 0 to 2
+            // -(x-3)^2 + 9, where x changes from 0 to 2, hence 2.0 in _delta
             var xminus3 = (days - 1) * _delta - 3;
             var quadraticCurveValue = 255.0 * (9.0 - xminus3 * xminus3) / 8.0;
-
-            //Debug.WriteLine("original days: " + daysSinceDone + " calculated days: " + days + " = " + quadraticCurveValue);
-            //Debug.WriteLine("xminus3: " + xminus3);
 
             return (byte)quadraticCurveValue;
         }
@@ -78,8 +72,7 @@ namespace TotalDomination.Data
         /// since the to-do item was last done
         /// </summary>
         /// <param name="daysSinceDone">Number of days since the to-do item was last done</param>
-        /// <returns>The "urgency tier" (0 means not urgent at all)</returns>
-        /// <exception cref="NotImplementedException"></exception>
+        /// <returns>The urgency tier (0 means not urgent at all)</returns>
         public int UrgencyTier(int daysSinceDone)
         {
             if (TotalFrequency == 0)

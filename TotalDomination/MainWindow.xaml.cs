@@ -9,11 +9,12 @@ namespace TotalDomination
     /// </summary>
     public partial class MainWindow : Window
     {
+        #region Constructor and initializer
+
         public MainWindow()
         {
             InitializeComponent();
         }
-
 
         // Calls the view model's initializer
         private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
@@ -23,7 +24,7 @@ namespace TotalDomination
                 await mainViewModel.InitializeAsync();
             }
         }
-
+        #endregion
 
         #region Handling window state changes
         private void Window_StateChanged(object sender, EventArgs e)

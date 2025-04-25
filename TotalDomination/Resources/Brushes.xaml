@@ -3,6 +3,7 @@
 
     
     <SolidColorBrush Color="#d2691e" x:Key="BurntOrange"/>
+    <SolidColorBrush Color="#ff5b00" x:Key="Fire"/>
     <SolidColorBrush Color="#ffb90f" x:Key="Gold"/>
 
     <SolidColorBrush Color="#ccc" x:Key="TitleBarGray"/>

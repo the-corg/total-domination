@@ -68,10 +68,12 @@
         <ListBox Grid.Row="1" ItemsSource="{Binding Todos}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
-                        <Border Width="40" Style="{StaticResource border1}"/>
-                        <CheckBox Content="{Binding Title}" IsChecked="{Binding IsDone}"/>
-                    </StackPanel>
+                    <CheckBox IsChecked="{Binding IsDone}">
+                        <TextBlock>
+                            <Run Text="{Binding Fires, Mode=OneWay}" Foreground="{StaticResource Fire}"/>
+                            <Run Text="{Binding Title, Mode=OneWay}"/>
+                        </TextBlock>
+                    </CheckBox>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>

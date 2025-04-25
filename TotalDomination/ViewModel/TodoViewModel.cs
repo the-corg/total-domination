@@ -25,10 +25,27 @@ namespace TotalDomination.ViewModel
         #endregion
 
         #region Public properties 
+
         /// <summary>
         /// Title of the To-do item
         /// </summary>
         public string Title
+        {
+            get => _model.Title;
+            set
+            {
+                if (value == _model.Title)
+                    return;
+
+                _model.Title = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Fires in front of the To-do item (when it's long overdue) 
+        /// </summary>
+        public string Fires
         {
             get
             {
@@ -38,19 +55,7 @@ namespace TotalDomination.ViewModel
                 {
                     fires += "🔥";
                 }
-                if (fires.Length > 0)
-                {
-                    fires += " ";
-                }
-                return fires + _model.Title + $" Color: R={Color.R} G={Color.G} B={Color.B}";
-            }
-            set
-            {
-                if (value == _model.Title)
-                    return;
-
-                _model.Title = value;
-                OnPropertyChanged();
+                return fires;
             }
         }
 
@@ -99,7 +104,7 @@ namespace TotalDomination.ViewModel
         /// <summary>
         /// Number of days since the to-do item was last done (0 = today, 1 = yesterday)
         /// </summary>
-        public int DaysSinceDone { get; set; }
+        public int DaysSinceDone { get; set; } // TODO: This should be calculated based on LastDone date (or added, if new)
 
         /// <summary>
         /// Shows whether the To-do item was done today
@@ -138,7 +143,9 @@ namespace TotalDomination.ViewModel
             }
         }
 
-
+        /// <summary>
+        /// Represents the font weight of the To-do item (based on urgency)
+        /// </summary>
         public FontWeight FontWeight
         {
             get
@@ -155,19 +162,7 @@ namespace TotalDomination.ViewModel
                     return FontWeights.UltraBold;
             }
         }
-
-
         #endregion
-
-        /// <summary>
-        /// Calls property changed events for visual data
-        /// (that's calculated later than everything else)
-        /// </summary>
-        /// <exception cref="NotImplementedException"></exception>
-        /*public void UpdateVisualData()
-        {
-            throw new NotImplementedException();
-        }*/
 
     }
 }

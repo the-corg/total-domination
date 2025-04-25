@@ -10,6 +10,7 @@ namespace TotalDomination
     /// </summary>
     public partial class App : Application
     {
+        #region Private fields and the constructor 
         private readonly ServiceProvider _serviceProvider;
 
         public App()
@@ -18,17 +19,16 @@ namespace TotalDomination
             ConfigureServices(services);
             _serviceProvider = services.BuildServiceProvider();
         }
+        #endregion
 
         #region Configure services for dependency injection
         private void ConfigureServices(ServiceCollection services)
         {
             services.AddSingleton<MainWindow>();
-
             services.AddSingleton<MainViewModel>();
 
             services.AddSingleton<Calculations>();
             services.AddTransient<FileManager>();
-
         }
         #endregion
 
