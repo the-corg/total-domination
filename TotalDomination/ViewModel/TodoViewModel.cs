@@ -127,22 +127,25 @@ namespace TotalDomination.ViewModel
         }
 
         /// <summary>
-        /// Represents the color of the To-do item (based on urgency)
+        /// Brush with the color of the To-do item (based on urgency)
         /// </summary>
-        public Color Color
+        public SolidColorBrush ColorBrush
         {
             get
             {
                 int urgencyTier = _calculations.UrgencyTier(DaysSinceDone);
+                Color color;
 
                 if (urgencyTier == -1)
-                    return new Color() { A = 255, R = 32, G = 32, B = 32 };
+                    color = new Color() { A = 255, R = 32, G = 32, B = 32 };
                 else if (urgencyTier == 0)
-                    return new Color() { A = 255, R = _calculations.InterpolatedColorValue(DaysSinceDone), G = 255, B = 0 };
+                    color = new Color() { A = 255, R = _calculations.InterpolatedColorValue(DaysSinceDone), G = 255, B = 0 };
                 else if (urgencyTier == 1)
-                    return new Color() { A = 255, R = 255, G = _calculations.InterpolatedColorValue(DaysSinceDone), B = 0 };
+                    color = new Color() { A = 255, R = 255, G = _calculations.InterpolatedColorValue(DaysSinceDone), B = 0 };
                 else
-                    return new Color() { A = 255, R = 255, G = 0, B = 0 };
+                    color = new Color() { A = 255, R = 255, G = 0, B = 0 };
+
+                return new SolidColorBrush(color);
             }
         }
 

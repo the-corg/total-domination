@@ -10,7 +10,7 @@
 
     <sys:Double x:Key="TitleBarFontSize">20</sys:Double>
 
-    <sys:Double x:Key="CheckBoxSize">26</sys:Double>
+    <sys:Double x:Key="CheckBoxSize">20</sys:Double>
 
 
 </ResourceDictionary>

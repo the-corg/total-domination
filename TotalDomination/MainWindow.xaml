@@ -5,14 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TotalDomination"
         mc:Ignorable="d"
-        Title="To-do" Height="512" Width="512"
+        Title="Total Domination" Height="512" Width="512"
         MinHeight="256" MinWidth="256"
         WindowStartupLocation="CenterScreen"
         StateChanged="Window_StateChanged"
         FontSize="24" FontFamily="Segoe UI"
         SnapsToDevicePixels="True"
         Loaded="MainWindow_Loaded"
-        Background="{StaticResource BackgroundGradient}">
+        Background="{StaticResource BackgroundGradient}"
+        Icon="Assets\IconWindow.ico">
 
     <WindowChrome.WindowChrome>
         <!-- Nonzero GlassFrameThickness provides a dropshadow for the window -->
@@ -48,7 +49,7 @@
 
             <!--Caption buttons-->
             <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Content="{Binding TodoFileName}" Style="{StaticResource OpenFileButton}"
+                <Button Content="{Binding TodoFileName, Mode=OneWay}" Style="{StaticResource OpenFileButton}"
                         Command="{Binding SelectFileCommand}"/>
                 <Button Content="🗕" Style="{StaticResource TitleBarButton}"
                         Command="{x:Static SystemCommands.MinimizeWindowCommand}"/>
@@ -68,7 +69,7 @@
         <ListBox Grid.Row="1" ItemsSource="{Binding Todos}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <CheckBox IsChecked="{Binding IsDone}">
+                    <CheckBox IsChecked="{Binding IsDone, Mode=TwoWay}">
                         <TextBlock>
                             <Run Text="{Binding Fires, Mode=OneWay}" Foreground="{StaticResource Fire}"/><Run Text="{Binding Title, Mode=OneWay}"/>
                         </TextBlock>

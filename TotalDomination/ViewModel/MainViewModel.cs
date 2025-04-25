@@ -1,7 +1,7 @@
 ﻿using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Windows;
-using System.Windows.Media.Animation;
 using TotalDomination.Data;
 using TotalDomination.Model;
 using TotalDomination.Properties;
@@ -19,6 +19,8 @@ namespace TotalDomination.ViewModel
         private readonly FileManager _fileManager;
         private readonly Calculations _calculations;
         private string _todoFilePath = Settings.Default.TodoListFile;
+
+        private bool _canCelebrate;
 
         #endregion
 
@@ -74,6 +76,9 @@ namespace TotalDomination.ViewModel
 
         #region Public properties 
 
+        /// <summary>
+        /// The list of to-do items 
+        /// </summary>
         public ObservableCollection<TodoViewModel> Todos { get; set; } = new();
 
         /// <summary>
@@ -81,6 +86,21 @@ namespace TotalDomination.ViewModel
         /// </summary>
         public string TodoFileName => string.IsNullOrWhiteSpace(_todoFilePath) ? "Open File" : Path.GetFileName(_todoFilePath);
 
+        /// <summary>
+        /// Shows whether celebration of success would be appropriate at the moment
+        /// </summary>
+        public bool CanCelebrate
+        {
+            get => _canCelebrate;
+            set
+            {
+                if (_canCelebrate == value)
+                    return;
+
+                _canCelebrate = value;
+                OnPropertyChanged();
+            }
+        }
         #endregion
 
         #region Commands and their delegates
@@ -89,12 +109,6 @@ namespace TotalDomination.ViewModel
         /// Command for selecting the To-do list file
         /// </summary>
         public DelegateCommand SelectFileCommand { get; }
-
-        /// <summary>
-        /// Command for showing the success message
-        /// </summary>
-        public DelegateCommand DoneCommand { get; }
-
         private void SelectFile()
         {
             _todoFilePath = _fileManager.SelectTodoListFile() ?? "";
@@ -103,47 +117,21 @@ namespace TotalDomination.ViewModel
             OnPropertyChanged(nameof(TodoFileName));
         }
 
-        private async void Done(object? parameter)
+        /// <summary>
+        /// Command for showing the success message
+        /// </summary>
+        public DelegateCommand DoneCommand { get; }
+        private void Done(object? parameter)
         {
             if (parameter is bool isChecked)
             {
                 if (isChecked)
-                    await ShowSuccessAsync();
+                {
+                    CanCelebrate = true; // The setter fires PropertyChanged, and the animation starts
+
+                    CanCelebrate = false; // That's it. Enough celebrating
+                }
             }
-        }
-        #endregion
-
-
-        #region Success message
-
-        private bool _isSuccessVisible;
-
-        /// <summary>
-        /// Determines whether the success message should be visible currently
-        /// </summary>
-        public bool IsSuccessVisible
-        {
-            get => _isSuccessVisible;
-            set
-            {
-                if (_isSuccessVisible == value)
-                    return;
-
-                _isSuccessVisible = value;
-                OnPropertyChanged();
-            }
-        }
-
-
-
-        /// <summary>
-        /// Sets the property for the success animation for a while 
-        /// </summary>
-        private async Task ShowSuccessAsync()
-        {
-            IsSuccessVisible = true;
-            await Task.Delay(2000);
-            IsSuccessVisible = false;
         }
         #endregion
 
