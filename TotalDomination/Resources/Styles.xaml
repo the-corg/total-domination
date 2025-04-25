@@ -68,22 +68,107 @@
         <Setter Property="Margin" Value="3 0"/>
     </Style>
 
+    <Style TargetType="ScrollBar">
+        <Setter Property="Opacity" Value="0.3"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+    </Style>
+
+    <!-- CheckBoxes in ListBox -->
     <Style TargetType="CheckBox">
+        <Setter Property="FontWeight" Value="{Binding FontWeight}"/>
         <Setter Property="Foreground">
             <Setter.Value>
                 <SolidColorBrush Color="{Binding Color}"/>
             </Setter.Value>
         </Setter>
+        <Setter Property="Command" Value="{Binding DataContext.DoneCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"/>
+        <Setter Property="CommandParameter" Value="{Binding IsChecked, RelativeSource={RelativeSource Self}}"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
-        <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="BorderBrush" Value="{StaticResource TitleThird}"/>
-        <Setter Property="FontWeight" Value="{Binding FontWeight}"/>
+        <Setter Property="Background" Value="{StaticResource OptionMark.Static.Background}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource OptionMark.Static.Border}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Margin" Value="0 2"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="CheckBox">
+                    <Grid x:Name="templateRoot" Background="Transparent">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Viewbox Width="{StaticResource CheckBoxSize}">
+                            <Border x:Name="checkBoxBorder" 
+                                Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" 
+                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                                <Grid x:Name="markGrid">
+                                    <Path x:Name="optionMark" 
+                                      Data="F1 M 9.97498,1.22334L 4.6983,9.09834L 4.52164,9.09834L 0,5.19331L 1.27664,3.52165L 4.255,6.08833L 8.33331,1.52588e-005L 9.97498,1.22334 Z " 
+                                      Fill="{StaticResource OptionMark.Static.Glyph}" Margin="1" Opacity="0" Stretch="None"/>
+                                </Grid>
+                            </Border>
+                        </Viewbox>
+                        <ContentPresenter x:Name="contentPresenter" Grid.Column="1" Focusable="False" Margin="{TemplateBinding Padding}" 
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                          RecognizesAccessKey="True" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        <Border Grid.Column="1" IsHitTestVisible="False" Height="2" Width="Auto" Margin="6 0 0 0"  VerticalAlignment="Center" 
+                                HorizontalAlignment="Stretch" BorderThickness="0 0 0 1" BorderBrush="{StaticResource Strikeout}"
+                                Visibility="{Binding IsChecked, RelativeSource={RelativeSource AncestorType=CheckBox}, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="HasContent" Value="true">
+                            <Setter Property="Padding" Value="6 -3 0 0"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter Property="Background" TargetName="checkBoxBorder" Value="{StaticResource OptionMark.MouseOver.Background}"/>
+                            <Setter Property="BorderBrush" TargetName="checkBoxBorder" Value="{StaticResource OptionMark.MouseOver.Border}"/>
+                            <Setter Property="Fill" TargetName="optionMark" Value="{StaticResource OptionMark.MouseOver.Glyph}"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="true">
+                            <Setter Property="Background" TargetName="checkBoxBorder" Value="{StaticResource OptionMark.Pressed.Background}"/>
+                            <Setter Property="BorderBrush" TargetName="checkBoxBorder" Value="{StaticResource OptionMark.Pressed.Border}"/>
+                            <Setter Property="Fill" TargetName="optionMark" Value="{StaticResource OptionMark.Pressed.Glyph}"/>
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="true">
+                            <Setter Property="Opacity" TargetName="optionMark" Value="1"/>
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="{x:Null}">
+                            <Setter Property="Opacity" TargetName="optionMark" Value="0"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 
-    <Style TargetType="ScrollBar">
-        <Setter Property="Opacity" Value="0.3"/>
+    <!-- Success message -->
+    <Style TargetType="Border" x:Key="SuccessMessageBorder">
         <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="IsHitTestVisible" Value="False"/>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding IsSuccessVisible}" Value="True">
+                <DataTrigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.3"/>
+                            <DoubleAnimation Storyboard.TargetProperty="Opacity" From="1" To="0" Duration="0:0:0.5" BeginTime="0:0:0.8"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </DataTrigger.EnterActions>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="SuccessMessageTextBlock">
+        <Setter Property="Margin" Value="0 -12 0 0"/>
+        <Setter Property="Foreground" Value="{StaticResource Gold}"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="FontSize" Value="64"/>
+        <Setter Property="IsHitTestVisible" Value="False"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
     </Style>
 
 </ResourceDictionary>

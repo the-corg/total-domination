@@ -70,8 +70,7 @@
                 <DataTemplate>
                     <CheckBox IsChecked="{Binding IsDone}">
                         <TextBlock>
-                            <Run Text="{Binding Fires, Mode=OneWay}" Foreground="{StaticResource Fire}"/>
-                            <Run Text="{Binding Title, Mode=OneWay}"/>
+                            <Run Text="{Binding Fires, Mode=OneWay}" Foreground="{StaticResource Fire}"/><Run Text="{Binding Title, Mode=OneWay}"/>
                         </TextBlock>
                     </CheckBox>
                 </DataTemplate>
@@ -81,6 +80,16 @@
         <!-- Border around window -->
         <Border Grid.RowSpan="2" BorderThickness="1" IsHitTestVisible="False"
                 BorderBrush="{StaticResource WindowBorder}"/>
+
+        <!-- Success message -->
+        <Border Opacity="0" Grid.RowSpan="2" Style="{StaticResource SuccessMessageBorder}">
+            <Viewbox Stretch="Uniform">
+                <StackPanel>
+                    <TextBlock Text="👍" Style="{StaticResource SuccessMessageTextBlock}"/>
+                    <TextBlock Text="✔" Foreground="LimeGreen" Style="{StaticResource SuccessMessageTextBlock}"/>
+                </StackPanel>
+            </Viewbox>
+        </Border>
     </Grid>
 
 </Window>

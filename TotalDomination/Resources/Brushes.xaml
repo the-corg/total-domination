@@ -14,13 +14,25 @@
 
     <SolidColorBrush Color="#00344a" x:Key="WindowBorder"/>
 
-    <SolidColorBrush Color="#5F8a9a5b" x:Key="SemiTransparent"/>
+    <SolidColorBrush Color="#5F0fb9ff" x:Key="SemiTransparent"/>
 
     <!-- Gradient for background -->
     <LinearGradientBrush StartPoint="0.5 0" EndPoint="0.5 1" x:Key="BackgroundGradient">
-        <GradientStop Color="#000000" Offset="0.0" />
-        <GradientStop Color="#00344a" Offset="0.5" />
-        <GradientStop Color="#000000" Offset="1.0" />
+        <GradientStop Color="#000000" Offset="0.0"/>
+        <GradientStop Color="#00344a" Offset="0.5"/>
+        <GradientStop Color="#000000" Offset="1.0"/>
     </LinearGradientBrush>
+
+    <!-- CheckBox colors -->
+    <SolidColorBrush x:Key="Strikeout" Color="#ffffff"/>
+    <SolidColorBrush x:Key="OptionMark.Static.Background" Color="#5F0fb9ff"/>
+    <SolidColorBrush x:Key="OptionMark.Static.Border" Color="#FFffb90f"/>
+    <SolidColorBrush x:Key="OptionMark.Static.Glyph" Color="#FFFFFFFF"/>
+    <SolidColorBrush x:Key="OptionMark.MouseOver.Background" Color="#aF0fb9ff"/>
+    <SolidColorBrush x:Key="OptionMark.MouseOver.Border" Color="#FFffb90f"/>
+    <SolidColorBrush x:Key="OptionMark.MouseOver.Glyph" Color="#FF00344a"/>
+    <SolidColorBrush x:Key="OptionMark.Pressed.Background" Color="#FFffb90f"/>
+    <SolidColorBrush x:Key="OptionMark.Pressed.Border" Color="#FF000000"/>
+    <SolidColorBrush x:Key="OptionMark.Pressed.Glyph" Color="#FF000000"/>
 
 </ResourceDictionary>

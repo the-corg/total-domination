@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.IO;
 using System.Windows;
+using System.Windows.Media.Animation;
 using TotalDomination.Data;
 using TotalDomination.Model;
 using TotalDomination.Properties;
@@ -29,6 +30,7 @@ namespace TotalDomination.ViewModel
             _calculations = calculations;
 
             SelectFileCommand = new DelegateCommand(execute => SelectFile());
+            DoneCommand = new DelegateCommand(Done);
         }
 
         /// <summary>
@@ -88,12 +90,26 @@ namespace TotalDomination.ViewModel
         /// </summary>
         public DelegateCommand SelectFileCommand { get; }
 
+        /// <summary>
+        /// Command for showing the success message
+        /// </summary>
+        public DelegateCommand DoneCommand { get; }
+
         private void SelectFile()
         {
             _todoFilePath = _fileManager.SelectTodoListFile() ?? "";
             Settings.Default.TodoListFile = _todoFilePath;
             Settings.Default.Save();
             OnPropertyChanged(nameof(TodoFileName));
+        }
+
+        private async void Done(object? parameter)
+        {
+            if (parameter is bool isChecked)
+            {
+                if (isChecked)
+                    await ShowSuccessAsync();
+            }
         }
         #endregion
 
@@ -118,10 +134,12 @@ namespace TotalDomination.ViewModel
             }
         }
 
+
+
         /// <summary>
         /// Sets the property for the success animation for a while 
         /// </summary>
-        public async Task ShowSuccessAsync()
+        private async Task ShowSuccessAsync()
         {
             IsSuccessVisible = true;
             await Task.Delay(2000);

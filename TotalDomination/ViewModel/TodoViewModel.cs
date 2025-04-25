@@ -51,10 +51,13 @@ namespace TotalDomination.ViewModel
             {
                 string fires = "";
                 int urgencyTier = _calculations.UrgencyTier(DaysSinceDone);
+
                 for (int i = 0; i < urgencyTier - 1; i++)
-                {
                     fires += "🔥";
-                }
+
+                if (fires.Length > 0)
+                    fires += " ";
+
                 return fires;
             }
         }
