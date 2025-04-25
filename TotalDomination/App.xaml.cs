@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
 using TotalDomination.Data;
+using TotalDomination.Utilities;
 using TotalDomination.ViewModel;
 
 namespace TotalDomination

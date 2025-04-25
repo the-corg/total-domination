@@ -1,4 +1,6 @@
-﻿namespace TotalDomination.Data
+﻿using TotalDomination.Properties;
+
+namespace TotalDomination.Utilities
 {
     /// <summary>
     /// Performs calculations, e.g., for color interpolation 
@@ -49,7 +51,7 @@
         /// <returns>Value for one color component</returns>
         public byte InterpolatedColorValue(int daysSinceDone)
         {
-            if (daysSinceDone <= 0) 
+            if (daysSinceDone <= 0)
                 return 0;
 
             int days = daysSinceDone;
@@ -79,6 +81,29 @@
                 return -1;
 
             return (daysSinceDone - 1) / TotalFrequency;
+        }
+        #endregion
+
+
+        #region Static helper methods
+
+        /// <summary>
+        /// Returns today's date shifted by NewDayStart hours.<br/>
+        /// E.g., for NewDayStart = 4, new day starts at 4:00 o'clock.<br/>
+        /// Thus, for time from 0:00 to 4:00, the previous day will be returned
+        /// </summary>
+        /// <returns>Today's date taking into account midnight shift</returns>
+        public static DateOnly GetTodayWithMidnightShift()
+        {
+            var currentTime = DateTime.Now;
+            var today = DateOnly.FromDateTime(currentTime);
+
+            if (currentTime.Hour < Settings.Default.NewDayStart)
+            {
+                today.AddDays(-1);
+            }
+
+            return today;
         }
         #endregion
     }

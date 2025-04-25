@@ -1,10 +1,10 @@
 ﻿using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using TotalDomination.Data;
 using TotalDomination.Model;
 using TotalDomination.Properties;
+using TotalDomination.Utilities;
 
 namespace TotalDomination.ViewModel
 {
@@ -22,6 +22,9 @@ namespace TotalDomination.ViewModel
 
         private bool _canCelebrate;
 
+        private List<Todo> _completeList = new();
+        private List<Todo> _currentList = new();
+
         #endregion
 
         #region Constructor and Initializer
@@ -31,7 +34,7 @@ namespace TotalDomination.ViewModel
             _fileManager = fileManager;
             _calculations = calculations;
 
-            SelectFileCommand = new DelegateCommand(execute => SelectFile());
+            SelectFileCommand = new DelegateCommand(async execute => await SelectFileAsync());
             DoneCommand = new DelegateCommand(Done);
         }
 
@@ -40,16 +43,16 @@ namespace TotalDomination.ViewModel
         /// </summary>
         public async Task InitializeAsync()
         {
-            // First load JSON (async)
-            // If there's no JSON, create an empty one
+            // First load the complete to-do list
+            _completeList = await _fileManager.LoadCompleteListAsync();
 
-            if (string.IsNullOrEmpty(_todoFilePath))
+            if (string.IsNullOrWhiteSpace(_todoFilePath))
                 return;
 
+            // Then load the current to-do list
             if (File.Exists(_todoFilePath))
             {
-                // Load file here (async)
-                // Add everything that's not in JSON to JSON
+                await LoadAndProcessCurrentListAsync();
             }
             else
             {
@@ -58,19 +61,7 @@ namespace TotalDomination.ViewModel
                 OnPropertyChanged(nameof(TodoFileName));
             }
 
-            // TODO: remove this later
-            var todos = new List<TodoViewModel>();
-            for (int i = 0; i < 33; i++)
-                todos.Add(new TodoViewModel(new Todo() { Added = DateOnly.MinValue, FileName = _todoFilePath, Title = "This is task number " + (i + 1) }, _calculations));
-            for (int i = 0; i < todos.Count; i++)
-                todos[todos.Count - 1 - i].DaysSinceDone = 7*i + 1;
-
-            _calculations.TotalFrequency = todos.Sum(x => x.Frequency);
-
-            foreach (var todo in todos)
-                Todos.Add(todo);
         }
-
         #endregion
 
 
@@ -109,12 +100,17 @@ namespace TotalDomination.ViewModel
         /// Command for selecting the To-do list file
         /// </summary>
         public DelegateCommand SelectFileCommand { get; }
-        private void SelectFile()
+        private async Task SelectFileAsync()
         {
             _todoFilePath = _fileManager.SelectTodoListFile() ?? "";
             Settings.Default.TodoListFile = _todoFilePath;
             Settings.Default.Save();
             OnPropertyChanged(nameof(TodoFileName));
+
+            if (string.IsNullOrWhiteSpace(_todoFilePath))
+                return;
+
+            await LoadAndProcessCurrentListAsync();
         }
 
         /// <summary>
@@ -135,6 +131,58 @@ namespace TotalDomination.ViewModel
         }
         #endregion
 
+        #region Private methods 
+
+        /// <summary>
+        /// Loads todo file, modifies complete list, saves it, creates TodoViewModels
+        /// </summary>
+        private async Task LoadAndProcessCurrentListAsync()
+        {
+            _currentList = await _fileManager.LoadCurrentListAsync(_todoFilePath);
+            bool completeListChanged = false;
+
+            // Add anything that's new to the complete list
+            foreach (var todo in _currentList)
+            {
+                var matchingTodo = _completeList.FirstOrDefault(x => (x.FileName == todo.FileName) && (x.Title == todo.Title));
+
+                if (matchingTodo is not null)
+                {
+                    // There's already such a to-do item in the complete list
+                    todo.Added = matchingTodo.Added;
+                    todo.DoneDates = matchingTodo.DoneDates;
+
+                    if (matchingTodo.Frequency != todo.Frequency)
+                    {
+                        matchingTodo.Frequency = todo.Frequency;
+                        completeListChanged = true;
+                    }
+                }
+                else
+                {
+                    // This to-do item is new
+                    _completeList.Add(todo);
+                    completeListChanged = true;
+                }
+            }
+
+            // Save complete list
+            if (completeListChanged)
+            {
+                await _fileManager.SaveCompleteListAsync(_completeList);
+            }
+
+            _calculations.TotalFrequency = _currentList.Sum(x => x.Frequency);
+
+            // Create todo view models
+            var todoViewModels = _currentList.Select(x => new TodoViewModel(x, _calculations)).
+                ToList().OrderBy(x => -x.DaysSinceDone).ThenBy(x => -x.Frequency);
+
+            Todos.Clear();
+            foreach (var t in todoViewModels)
+                Todos.Add(t);
+        }
+        #endregion
 
     }
 }

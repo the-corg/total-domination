@@ -34,5 +34,14 @@ namespace TotalDomination.Properties {
                 this["TodoListFile"] = value;
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("4")]
+        public int NewDayStart {
+            get {
+                return ((int)(this["NewDayStart"]));
+            }
+        }
     }
 }

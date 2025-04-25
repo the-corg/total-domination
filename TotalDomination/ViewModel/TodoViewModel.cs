@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Media;
-using TotalDomination.Data;
 using TotalDomination.Model;
+using TotalDomination.Utilities;
 
 namespace TotalDomination.ViewModel
 {
