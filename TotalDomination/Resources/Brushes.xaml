@@ -2,11 +2,28 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
 
-    <SolidColorBrush Color="#228b22" x:Key="ForestGreen"/>
+    
     <SolidColorBrush Color="#d2691e" x:Key="BurntOrange"/>
     <SolidColorBrush Color="#ffb90f" x:Key="Gold"/>
-    <SolidColorBrush Color="#8a9a5b" x:Key="PaleOlive"/>
 
+    <SolidColorBrush Color="#ccc" x:Key="TitleBarGray"/>
+
+    <SolidColorBrush Color="#b9ff0f" x:Key="TitleFirst"/>
+    <SolidColorBrush Color="#ffb90f" x:Key="TitleSecond"/>
+    <SolidColorBrush Color="#0fb9ff" x:Key="TitleThird"/>
+
+    <SolidColorBrush Color="#00344a" x:Key="WindowBorder"/>
+
+    <SolidColorBrush Color="#5F8a9a5b" x:Key="SemiTransparent"/>
+
+    <!-- Gradient for background -->
+    <LinearGradientBrush StartPoint="0.5 0" EndPoint="0.5 1" x:Key="BackgroundGradient">
+        <GradientStop Color="#000000" Offset="0.0" />
+        <GradientStop Color="#00344a" Offset="0.5" />
+        <GradientStop Color="#000000" Offset="1.0" />
+    </LinearGradientBrush>
+
+    <!--
     <SolidColorBrush Color="#afc0f0" x:Key="7_SuperLightBlue"/>
     <SolidColorBrush Color="#6d8de3" x:Key="6_VeryLightBlue"/>
     <SolidColorBrush Color="#2b5ad6" x:Key="5_LightBlue"/>
@@ -14,19 +31,26 @@
     <SolidColorBrush Color="#0d1c44" x:Key="3_DarkBlue"/>
     <SolidColorBrush Color="#070e23" x:Key="2_VeryDarkBlue"/>
     <SolidColorBrush Color="#040813" x:Key="1_SuperDarkBlue"/>
-    <SolidColorBrush Color="#8e8e9f" x:Key="TitleBarGray"/>
+    -->
 
-    <SolidColorBrush Color="#e36d8d" x:Key="TitleRed"/>
-    <SolidColorBrush Color="#6de38d" x:Key="TitleGreen"/>
+    <!-- 
+    <SolidColorBrush Color="#e36d8d" x:Key="TitleFirst"/>
+    <SolidColorBrush Color="#6de38d" x:Key="TitleSecond"/>
+    -->
 
-    <SolidColorBrush Color="#5F8a9a5b" x:Key="SemiTransparent"/>
+    <!-- <SolidColorBrush Color="#a9cf0f" x:Key="TitleGreen"/> -->
 
-    <!-- Gradient for background -->
+    <!--
     <LinearGradientBrush StartPoint="0.5 0" EndPoint="0.5 1" x:Key="BackgroundGradient">
         <GradientStop Color="#000000" Offset="0.0" />
         <GradientStop Color="#0d1c44" Offset="0.5" />
         <GradientStop Color="#000000" Offset="1.0" />
     </LinearGradientBrush>
-    
+-->
+
+    <!--
+    <SolidColorBrush Color="#228b22" x:Key="ForestGreen"/>
+    <SolidColorBrush Color="#8a9a5b" x:Key="PaleOlive"/>
+-->
 
 </ResourceDictionary>
