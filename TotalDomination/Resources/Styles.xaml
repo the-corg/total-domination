@@ -69,10 +69,24 @@
     </Style>
 
     <Style TargetType="CheckBox">
-        <Setter Property="Foreground" Value="{StaticResource TitleBarGray}"/>
+        <Setter Property="Foreground">
+            <Setter.Value>
+                <SolidColorBrush Color="{Binding Color}"/>
+            </Setter.Value>
+        </Setter>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="BorderBrush" Value="{StaticResource TitleThird}"/>
+        <Setter Property="FontWeight" Value="{Binding FontWeight}"/>
+    </Style>
+
+    <Style TargetType="Border" x:Key="border1">
+        <Setter Property="Width" Value="40"/>
+        <Setter Property="Background">
+            <Setter.Value>
+                <SolidColorBrush Color="{Binding Color}"/>
+            </Setter.Value>
+        </Setter>
     </Style>
 
     <Style TargetType="ScrollBar">

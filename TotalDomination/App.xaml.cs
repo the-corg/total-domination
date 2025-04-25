@@ -26,6 +26,7 @@ namespace TotalDomination
 
             services.AddSingleton<MainViewModel>();
 
+            services.AddSingleton<Calculations>();
             services.AddTransient<FileManager>();
 
         }

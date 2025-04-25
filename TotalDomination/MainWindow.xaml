@@ -68,13 +68,17 @@
         <ListBox Grid.Row="1" ItemsSource="{Binding Todos}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <CheckBox Content="{Binding Title}" IsChecked="{Binding IsDone}"/>
+                    <StackPanel Orientation="Horizontal">
+                        <Border Width="40" Style="{StaticResource border1}"/>
+                        <CheckBox Content="{Binding Title}" IsChecked="{Binding IsDone}"/>
+                    </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
 
         <!-- Border around window -->
-        <Border Grid.RowSpan="2" BorderThickness="1" BorderBrush="{StaticResource WindowBorder}"/>
+        <Border Grid.RowSpan="2" BorderThickness="1" IsHitTestVisible="False"
+                BorderBrush="{StaticResource WindowBorder}"/>
     </Grid>
 
 </Window>
