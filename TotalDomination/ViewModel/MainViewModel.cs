@@ -129,9 +129,9 @@ namespace TotalDomination.ViewModel
         public DelegateCommand DoneCommand { get; }
         private async Task DoneAsync(object? parameter)
         {
-            if (parameter is bool isChecked)
+            if (parameter is bool isDone)
             {
-                if (isChecked)
+                if (isDone)
                 {
                     CanCelebrate = true; // The setter fires PropertyChanged, and the animation starts
 
@@ -160,8 +160,6 @@ namespace TotalDomination.ViewModel
                 if (matchingTodo is not null)
                 {
                     // There's already such a to-do item in the complete list
-                    // TODO: remove this! (debug code)
-                    // matchingTodo.DoneDates[matchingTodo.DoneDates.Count - 1] = matchingTodo.DoneDates[matchingTodo.DoneDates.Count - 1].AddDays(-1);
 
                     // Update frequency, if needed
                     if (matchingTodo.Frequency != _currentList[i].Frequency)
@@ -179,7 +177,7 @@ namespace TotalDomination.ViewModel
                 }
             }
 
-            // Backup and save complete list
+            // Back up and save complete list
             _fileManager.MakeBackup();
             await SaveDataAsync();
 

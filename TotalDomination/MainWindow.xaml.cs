@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Input;
+using TotalDomination.Properties;
 using TotalDomination.ViewModel;
 
 namespace TotalDomination
@@ -65,16 +66,23 @@ namespace TotalDomination
 
         #region Startup/closing events 
 
-        // Calls the view model's initializer
+        // Restores saved window size, calls the view model's initializer
         private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
+            // Restore the window position, size, and state
+            Top = Settings.Default.MainWindowTop;
+            Left = Settings.Default.MainWindowLeft;
+            Height = Settings.Default.MainWindowHeight;
+            Width = Settings.Default.MainWindowWidth;
+            WindowState = Settings.Default.MainWindowState;
+
             if (DataContext is MainViewModel mainViewModel)
             {
                 await mainViewModel.InitializeAsync();
             }
         }
 
-        // Calls the view model to save data on exit
+        // Calls the view model to save data on exit, saves window size 
         private async void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             if (_readyToBeClosed)
@@ -87,6 +95,14 @@ namespace TotalDomination
             {
                 await mainViewModel.SaveDataAsync();
             }
+
+            // Save the window position, size, and state
+            Settings.Default.MainWindowTop = RestoreBounds.Top;
+            Settings.Default.MainWindowLeft = RestoreBounds.Left;
+            Settings.Default.MainWindowHeight = RestoreBounds.Height;
+            Settings.Default.MainWindowWidth = RestoreBounds.Width;
+            Settings.Default.MainWindowState = WindowState;
+            Settings.Default.Save();
 
             // Now really close the window
             _readyToBeClosed = true;

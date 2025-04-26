@@ -17,12 +17,11 @@
     <!-- Gradient for background -->
     <LinearGradientBrush StartPoint="0.5 0" EndPoint="0.5 1" x:Key="BackgroundGradient">
         <GradientStop Color="#000000" Offset="0.0"/>
-        <GradientStop Color="#00344a" Offset="0.5"/>
-        <GradientStop Color="#000000" Offset="1.0"/>
+        <GradientStop Color="#00344a" Offset="1"/>
+        <GradientStop Color="#000000" Offset="2.0"/>
     </LinearGradientBrush>
 
     <!-- CheckBox colors -->
-    <SolidColorBrush x:Key="Strikeout" Color="#ffffff"/>
     <SolidColorBrush x:Key="OptionMark.Static.Background" Color="#5F0fb9ff"/>
     <SolidColorBrush x:Key="OptionMark.Static.Border" Color="#FFffb90f"/>
     <SolidColorBrush x:Key="OptionMark.Static.Glyph" Color="#FFFFFFFF"/>

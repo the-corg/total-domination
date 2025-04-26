@@ -61,7 +61,7 @@ namespace TotalDomination.ViewModel
                     s.Add(" | " + LastDone + "\n");
                 }
 
-                s.Add("\nTimes done previously: " + (IsDone ? datesCount - 1 : datesCount));
+                s.Add("\nTimes done: " + datesCount);
 
                 if (IsDone)
                 {
@@ -104,14 +104,10 @@ namespace TotalDomination.ViewModel
 
                 result += string.Join("", s);
 
-                if (datesCount > 1 || (datesCount == 1 && !IsDone))
+                if (datesCount > 0)
                 {
-                    result += "\n\nHistory:\n" + string.Join("  ", DoneDates.Select(x => x.ToShortDateString()));
+                    result += "\n\nHistory:\n" + string.Join("  ", DoneDates.Select(x => x.ToShortDateString()).Reverse());
                 }
-
-                // TODO: remove! (debug code)
-                // result += "\n\nTier: " + _calculations.UrgencyTier(DaysSinceDone);
-                // result += "\nColor: " + ColorBrush.Color.R + " " + ColorBrush.Color.G + " " + ColorBrush.Color.B;
 
                 return result;
             }

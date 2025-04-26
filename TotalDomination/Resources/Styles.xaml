@@ -86,6 +86,7 @@
     <Style TargetType="ListBoxItem">
         <Setter Property="Focusable" Value="False"/>
         <Setter Property="Margin" Value="3 0"/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
     </Style>
 
     <Style TargetType="ScrollBar">
@@ -96,10 +97,29 @@
 
     <!-- CheckBoxes in ListBox -->
     <Style TargetType="CheckBox">
+        <Style.Resources>
+            <Style TargetType="TextBlock">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding IsDone}" Value="True">
+                        <Setter Property="TextDecorations">
+                            <Setter.Value>
+                                <TextDecorationCollection>
+                                    <TextDecoration Location="Strikethrough">
+                                        <TextDecoration.Pen>
+                                            <Pen Thickness="1.7" Brush="{StaticResource Gold}"/>
+                                        </TextDecoration.Pen>
+                                    </TextDecoration>
+                                </TextDecorationCollection>
+                            </Setter.Value>
+                        </Setter>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </Style.Resources>
         <Setter Property="Foreground" Value="{Binding ColorBrush}"/>
         <Setter Property="FontWeight" Value="{Binding FontWeight}"/>
         <Setter Property="Command" Value="{Binding DataContext.DoneCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"/>
-        <Setter Property="CommandParameter" Value="{Binding IsChecked, RelativeSource={RelativeSource Self}}"/>
+        <Setter Property="CommandParameter" Value="{Binding IsDone}"/>
         <Setter Property="ToolTip" Value="{Binding Info}"/>
         <Setter Property="ToolTipService.InitialShowDelay" Value="500"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
@@ -107,6 +127,7 @@
         <Setter Property="BorderBrush" Value="{StaticResource OptionMark.Static.Border}"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="Margin" Value="0 2"/>
+
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="CheckBox">
@@ -131,10 +152,7 @@
                         </Viewbox>
                         <ContentPresenter x:Name="contentPresenter" Grid.Column="1" Focusable="False" Margin="{TemplateBinding Padding}" 
                                           HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
-                                          RecognizesAccessKey="True" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                        <Border Grid.Column="1" IsHitTestVisible="False" Height="2" Width="Auto" Margin="6 0 0 0"  VerticalAlignment="Center" 
-                                HorizontalAlignment="Stretch" BorderThickness="0 0 0 1" BorderBrush="{StaticResource Strikeout}"
-                                Visibility="{Binding IsChecked, RelativeSource={RelativeSource AncestorType=CheckBox}, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="HasContent" Value="true">
