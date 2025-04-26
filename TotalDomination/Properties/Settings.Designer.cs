@@ -43,5 +43,14 @@ namespace TotalDomination.Properties {
                 return ((int)(this["NewDayStart"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("3")]
+        public int BackupsCount {
+            get {
+                return ((int)(this["BackupsCount"]));
+            }
+        }
     }
 }

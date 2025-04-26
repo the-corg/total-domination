@@ -4,7 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TotalDomination" 
-        xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+        xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase" 
+        xmlns:sys="clr-namespace:System;assembly=netstandard"
         mc:Ignorable="d"
         Title="Total Domination" Height="512" Width="512"
         MinHeight="256" MinWidth="256"
@@ -35,10 +36,14 @@
     <Window.Resources>
         <CollectionViewSource x:Key="TodosCollectionView" Source="{Binding Todos}" 
                               IsLiveSortingRequested="True">
+            <CollectionViewSource.LiveSortingProperties>
+                <sys:String>IsDone</sys:String>
+            </CollectionViewSource.LiveSortingProperties>
             <CollectionViewSource.SortDescriptions>
                 <scm:SortDescription PropertyName="IsDone" Direction="Ascending"/>
                 <scm:SortDescription PropertyName="DaysSinceDone" Direction="Descending"/>
                 <scm:SortDescription PropertyName="Frequency" Direction="Descending"/>
+                <scm:SortDescription PropertyName="Title" Direction="Ascending"/>
             </CollectionViewSource.SortDescriptions>
         </CollectionViewSource>
     </Window.Resources>
@@ -56,7 +61,7 @@
                 <ColumnDefinition/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <TextBlock Foreground="{StaticResource TitleBarGray}" FontSize="{StaticResource TitleBarFontSize}" Margin="10 2 0 0">
+            <TextBlock Foreground="{StaticResource TitleBarGray}" FontSize="{StaticResource TitleBarFontSize}" Margin="10 3 0 0">
                 <Run Text="To" Foreground="{StaticResource TitleFirst}" FontWeight="Bold"/><Run Text="tal"/>
                 <Run Text="Do" Foreground="{StaticResource TitleSecond}" FontWeight="Bold"/><Run Text="mination"/>
             </TextBlock>

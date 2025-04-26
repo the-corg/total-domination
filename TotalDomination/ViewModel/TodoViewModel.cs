@@ -12,10 +12,14 @@ namespace TotalDomination.ViewModel
     {
         #region Private fields and the constructor
 
+        private readonly Calculations _calculations;
+
         private Todo _model;
         private bool _isDone;
-
-        private readonly Calculations _calculations;
+        private double _averageDaysPreviously = -1;
+        private double _averageDaysIfDoneToday = -1;
+        private int _maximumDaysPreviously = -1;
+        private int _maximumDaysIfDoneToday = -1;
 
         public TodoViewModel(Todo model, Calculations calculations)
         {
@@ -24,6 +28,8 @@ namespace TotalDomination.ViewModel
 
             if (_model.DoneDates.Count > 0)
                 _isDone = Calculations.GetTodayWithMidnightShift() == _model.DoneDates.Last();
+
+            CalculateDayStats();
         }
         #endregion
 
@@ -36,8 +42,47 @@ namespace TotalDomination.ViewModel
         {
             get
             {
-                string s = "TEST";
+                int datesCount = DoneDates.Count;
+                string s = Title + "\nAdded on " + Added;
+                s += "\nFrequency: " + Frequency + " out of " + _calculations.TotalFrequency;
 
+                if (datesCount > 1 || (datesCount == 1 && !IsDone) )
+                {
+                    s += "\n\nPreviously done on " + LastDone;
+                    s += "\nDays since last done: " + DaysSinceDone;
+                }
+                s += "\n\nTotal times done previously: " + (IsDone ? datesCount - 1 : datesCount);
+
+                if (IsDone)
+                {
+                    if (_averageDaysIfDoneToday >= 0)
+                        s += "\nAverage days in between: " + _averageDaysIfDoneToday.ToString("F1");
+                    if (_averageDaysPreviously >= 0)
+                        s += " (previously: " + _averageDaysPreviously.ToString("F1") + ")";
+                    if (_maximumDaysIfDoneToday >= 0)
+                        s += "\nMaximum days in between: " + _maximumDaysIfDoneToday;
+                    if (_maximumDaysPreviously >= 0)
+                        s += " (previously: " + _maximumDaysPreviously + ")";
+                }
+                else
+                {
+                    if (_averageDaysPreviously >= 0)
+                    {
+                        s += "\nAverage days in between: " + _averageDaysPreviously.ToString("F1");
+                        s += " (if done today: " + _averageDaysIfDoneToday.ToString("F1") + ")";
+                    }
+                    if (_maximumDaysPreviously >= 0)
+                    {
+                        s += "\nMaximum days in between: " + _maximumDaysPreviously;
+                        s += " (if done today: " + _maximumDaysIfDoneToday + ")";
+                    }
+                }
+
+                if (datesCount > 1 || (datesCount == 1 && !IsDone))
+                {
+                    s += "\n\nHistory:\n" + string.Join("   ", DoneDates./*SkipLast(IsDone ? 1 : 0).*/Select(x => x.ToShortDateString()));
+                }
+                
                 return s;
             }
         }
@@ -140,6 +185,7 @@ namespace TotalDomination.ViewModel
                         _model.DoneDates.RemoveAt(count - 1);
                     }
                 }
+                OnPropertyChanged(nameof(Info));
             }
         }
 
@@ -186,6 +232,53 @@ namespace TotalDomination.ViewModel
             }
         }
         #endregion
+
+        #region Helper methods 
+
+        /// <summary>
+        /// Calculates _averageDaysPreviously, _averageDaysIfDoneToday, _maximumDaysPreviously, and _maximumDaysIfDoneToday
+        /// </summary>
+        private void CalculateDayStats()
+        {
+            // Edge cases
+            if (DoneDates.Count == 0 || (DoneDates.Count == 1 && IsDone))
+                return;
+            if (DoneDates.Count == 1) // IsDone is false here
+            {
+                _maximumDaysIfDoneToday = Calculations.GetTodayWithMidnightShift().DayNumber - DoneDates[0].DayNumber;
+                _averageDaysIfDoneToday = _maximumDaysIfDoneToday;
+                return;
+            }
+
+            // Regular case
+            List<int> intervals = [];
+
+            for (int i = 0; i < DoneDates.Count - 1; i++)
+            {
+                intervals.Add(DoneDates[i+1].DayNumber - DoneDates[i].DayNumber);
+            }
+            
+            if (IsDone)
+            {
+                _maximumDaysIfDoneToday = intervals.Max();
+                _averageDaysIfDoneToday = intervals.Average();
+                if (intervals.Count > 1)
+                {
+                    intervals.RemoveAt(intervals.Count - 1);
+                    _maximumDaysPreviously = intervals.Max();
+                    _averageDaysPreviously = intervals.Average();
+                }
+            }
+            else
+            {
+                _maximumDaysPreviously = intervals.Max();
+                _averageDaysPreviously = intervals.Average();
+                intervals.Add(Calculations.GetTodayWithMidnightShift().DayNumber - DoneDates.Last().DayNumber);
+                _maximumDaysIfDoneToday = intervals.Max();
+                _averageDaysIfDoneToday = intervals.Average();
+            }
+        }
+        #endregion 
 
     }
 }

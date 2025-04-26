@@ -3,6 +3,7 @@ using System.Text.Json;
 using System.Windows;
 using Microsoft.Win32;
 using TotalDomination.Model;
+using TotalDomination.Properties;
 using TotalDomination.Utilities;
 
 namespace TotalDomination.Data
@@ -17,6 +18,7 @@ namespace TotalDomination.Data
 
         private static readonly string _appDataFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "TotalDomination");
         private readonly string _jsonFilePath = Path.Combine(_appDataFolder, "TotalList.dat");
+        private readonly string _backupFilePath = Path.Combine(_appDataFolder, "TotalList.b");
 
         #endregion
 
@@ -103,7 +105,7 @@ namespace TotalDomination.Data
         }
         #endregion
 
-        #region Save list to json 
+        #region Save and backup
 
         /// <summary>
         /// Saves the complete list of to-do items to the JSON file
@@ -117,6 +119,28 @@ namespace TotalDomination.Data
 
             await File.WriteAllTextAsync(_jsonFilePath, json);
         }
+
+        /// <summary>
+        /// Makes a backup of the JSON file 
+        /// </summary>
+        public void MakeBackup()
+        {
+            int backupsCount = Settings.Default.BackupsCount;
+
+            // Rotate older backups, discarding the oldest
+            for (int i = backupsCount - 1; i > 0; i--)
+            {
+                var olderBackupPath = _backupFilePath + (i + 1).ToString("D2");
+                var newerBackupPath = _backupFilePath + i.ToString("D2");
+
+                if (File.Exists(newerBackupPath))
+                    File.Move(newerBackupPath, olderBackupPath, overwrite: true);
+            }
+
+            if (File.Exists(_jsonFilePath))
+                File.Move(_jsonFilePath, _backupFilePath + "01", overwrite: true);
+        }
+
         #endregion
 
 

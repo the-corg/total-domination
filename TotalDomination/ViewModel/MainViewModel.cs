@@ -83,7 +83,7 @@ namespace TotalDomination.ViewModel
         /// <summary>
         /// Name of the To-do list file
         /// </summary>
-        public string TodoFileName => string.IsNullOrWhiteSpace(_todoFilePath) ? "Open File" : Path.GetFileName(_todoFilePath);
+        public string TodoFileName => string.IsNullOrWhiteSpace(_todoFilePath) ? "Open File" : Path.GetFileNameWithoutExtension(_todoFilePath);
 
         /// <summary>
         /// Shows whether celebration of success would be appropriate at the moment
@@ -110,13 +110,15 @@ namespace TotalDomination.ViewModel
         public DelegateCommand SelectFileCommand { get; }
         private async Task SelectFileAsync()
         {
-            _todoFilePath = _fileManager.SelectTodoListFile() ?? "";
+            var newTodoFilePath = _fileManager.SelectTodoListFile();
+
+            if (string.IsNullOrWhiteSpace(newTodoFilePath) || newTodoFilePath == _todoFilePath)
+                return;
+
+            _todoFilePath = newTodoFilePath;
             Settings.Default.TodoListFile = _todoFilePath;
             Settings.Default.Save();
             OnPropertyChanged(nameof(TodoFileName));
-
-            if (string.IsNullOrWhiteSpace(_todoFilePath))
-                return;
 
             await LoadAndProcessCurrentListAsync();
         }
@@ -149,7 +151,6 @@ namespace TotalDomination.ViewModel
         private async Task LoadAndProcessCurrentListAsync()
         {
             _currentList = await _fileManager.LoadCurrentListAsync(_todoFilePath);
-            bool completeListChanged = false;
 
             // Add anything that's new to the complete list
             for (int i = 0; i < _currentList.Count; i++)
@@ -164,7 +165,6 @@ namespace TotalDomination.ViewModel
                     if (matchingTodo.Frequency != _currentList[i].Frequency)
                     {
                         matchingTodo.Frequency = _currentList[i].Frequency;
-                        completeListChanged = true;
                     }
 
                     // Set the reference to the object from the complete list
@@ -174,15 +174,12 @@ namespace TotalDomination.ViewModel
                 {
                     // This to-do item is new
                     _completeList.Add(_currentList[i]);
-                    completeListChanged = true;
                 }
             }
 
-            // Save complete list
-            if (completeListChanged)
-            {
-                await _fileManager.SaveCompleteListAsync(_completeList);
-            }
+            // Backup and save complete list
+            _fileManager.MakeBackup();
+            await SaveDataAsync();
 
             _calculations.TotalFrequency = _currentList.Sum(x => x.Frequency);
 

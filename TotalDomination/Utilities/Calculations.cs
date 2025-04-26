@@ -10,9 +10,9 @@ namespace TotalDomination.Utilities
 
         #region Private fields 
         // delta x for the color interpolation
-        double _delta;
+        private double _delta;
         // the sum of frequencies of all to-do items
-        int _totalFrequency;
+        private int _totalFrequency;
 
         #endregion
 

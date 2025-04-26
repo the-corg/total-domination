@@ -4,13 +4,12 @@
 
     <sys:Double x:Key="TitleBarHeight">32</sys:Double>
 
-    <sys:Double x:Key="BigFontSize">24</sys:Double>
-    <sys:Double x:Key="MediumFontSize">20</sys:Double>
-	<sys:Double x:Key="SmallFontSize">16</sys:Double>
-
-    <sys:Double x:Key="TitleBarFontSize">20</sys:Double>
-
     <sys:Double x:Key="CheckBoxSize">20</sys:Double>
-
-
+    
+    <!-- Font sizes -->
+    <sys:Double x:Key="ListFontSize">20</sys:Double>
+    <sys:Double x:Key="FileButtonFontSize">16</sys:Double>
+    <sys:Double x:Key="ToolTipFontSize">17</sys:Double>
+    <sys:Double x:Key="TitleBarFontSize">20</sys:Double>
+    
 </ResourceDictionary>

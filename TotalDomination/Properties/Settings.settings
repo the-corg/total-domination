@@ -8,5 +8,8 @@
     <Setting Name="NewDayStart" Type="System.Int32" Scope="Application">
       <Value Profile="(Default)">4</Value>
     </Setting>
+    <Setting Name="BackupsCount" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">3</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
