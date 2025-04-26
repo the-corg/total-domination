@@ -1,8 +1,6 @@
 ﻿using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.IO;
 using System.Windows;
-using System.Windows.Data;
 using TotalDomination.Data;
 using TotalDomination.Model;
 using TotalDomination.Properties;
@@ -36,14 +34,8 @@ namespace TotalDomination.ViewModel
             _fileManager = fileManager;
             _calculations = calculations;
 
-            SelectFileCommand = new DelegateCommand(async execute => await SelectFileAsync());
-            DoneCommand = new DelegateCommand(Done);
-
-            // Create list collection view for the list of to-do items and assign sorting to it
-            TodoListCollectionView = new ListCollectionView(Todos);
-            TodoListCollectionView.SortDescriptions.Add(new SortDescription("IsDone", ListSortDirection.Ascending));
-            TodoListCollectionView.SortDescriptions.Add(new SortDescription("DaysSinceDone", ListSortDirection.Descending));
-            TodoListCollectionView.SortDescriptions.Add(new SortDescription("Frequency", ListSortDirection.Descending));
+            SelectFileCommand = new DelegateCommand(async _ => await SelectFileAsync());
+            DoneCommand = new DelegateCommand(async param => await DoneAsync(param));
         }
 
         /// <summary>
@@ -74,7 +66,7 @@ namespace TotalDomination.ViewModel
         /// <summary>
         /// Saves the list of to-do items 
         /// </summary>
-        public async void SaveData()
+        public async Task SaveDataAsync()
         {
             await _fileManager.SaveCompleteListAsync(_completeList);
         }
@@ -87,11 +79,6 @@ namespace TotalDomination.ViewModel
         /// The list of to-do items 
         /// </summary>
         public ObservableCollection<TodoViewModel> Todos { get; set; } = new();
-        /// <summary>
-        /// The collection view for the list of to-do items
-        /// </summary>
-        public ListCollectionView TodoListCollectionView { get; }
-
 
         /// <summary>
         /// Name of the To-do list file
@@ -138,7 +125,7 @@ namespace TotalDomination.ViewModel
         /// Command for showing the success message
         /// </summary>
         public DelegateCommand DoneCommand { get; }
-        private void Done(object? parameter)
+        private async Task DoneAsync(object? parameter)
         {
             if (parameter is bool isChecked)
             {
@@ -149,8 +136,7 @@ namespace TotalDomination.ViewModel
                     CanCelebrate = false; // That's it. Enough celebrating
                 }
 
-                SaveData();
-                TodoListCollectionView.Refresh();
+                await SaveDataAsync();
             }
         }
         #endregion

@@ -70,7 +70,7 @@ namespace TotalDomination
         }
 
         // Saves data on exit
-        private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        private async void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             if (_readyToBeClosed)
                 return; // Closes the window
@@ -80,7 +80,7 @@ namespace TotalDomination
 
             if (DataContext is MainViewModel mainViewModel)
             {
-                mainViewModel.SaveData();
+                await mainViewModel.SaveDataAsync();
             }
 
             // Now really close the window

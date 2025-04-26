@@ -30,6 +30,19 @@ namespace TotalDomination.ViewModel
         #region Public properties 
 
         /// <summary>
+        /// All info about the to-do item 
+        /// </summary>
+        public string Info
+        {
+            get
+            {
+                string s = "TEST";
+
+                return s;
+            }
+        }
+
+        /// <summary>
         /// Title of the To-do item
         /// </summary>
         public string Title => _model.Title;
@@ -127,8 +140,6 @@ namespace TotalDomination.ViewModel
                         _model.DoneDates.RemoveAt(count - 1);
                     }
                 }
-
-                // TODO : Call OnPropertyChanged? or just sort the list? sort using ListCollectionView?
             }
         }
 

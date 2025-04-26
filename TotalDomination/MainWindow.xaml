@@ -3,7 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:TotalDomination"
+        xmlns:local="clr-namespace:TotalDomination" 
+        xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
         mc:Ignorable="d"
         Title="Total Domination" Height="512" Width="512"
         MinHeight="256" MinWidth="256"
@@ -30,6 +31,18 @@
         <CommandBinding Command="{x:Static SystemCommands.MinimizeWindowCommand}" Executed="CommandBinding_MinimizeExecuted"/>
     </Window.CommandBindings>
 
+    <!-- Collection View Source for Todos (provides live sorting) -->
+    <Window.Resources>
+        <CollectionViewSource x:Key="TodosCollectionView" Source="{Binding Todos}" 
+                              IsLiveSortingRequested="True">
+            <CollectionViewSource.SortDescriptions>
+                <scm:SortDescription PropertyName="IsDone" Direction="Ascending"/>
+                <scm:SortDescription PropertyName="DaysSinceDone" Direction="Descending"/>
+                <scm:SortDescription PropertyName="Frequency" Direction="Descending"/>
+            </CollectionViewSource.SortDescriptions>
+        </CollectionViewSource>
+    </Window.Resources>
+    
     <!-- Main Window Grid -->
     <Grid>
         <Grid.RowDefinitions>
@@ -67,7 +80,7 @@
 
         
         <!-- Content -->
-        <ListBox Grid.Row="1" ItemsSource="{Binding TodoListCollectionView}">
+        <ListBox Grid.Row="1" ItemsSource="{Binding Source={StaticResource TodosCollectionView}}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <CheckBox IsChecked="{Binding IsDone, Mode=TwoWay}">
