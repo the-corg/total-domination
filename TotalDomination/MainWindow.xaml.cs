@@ -5,7 +5,12 @@ using TotalDomination.ViewModel;
 namespace TotalDomination
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// MVVM-friendly code-behind for MainWindow.xaml.
+    /// For the most part, it's strictly view-related code.
+    /// Additionally, two DataContext methods are called, to handle 
+    /// startup (initialize data asynchronously after the UI is loaded)
+    /// and exit (to save data asynchronously on exit) to avoid creating 
+    /// extra complexity of attached behaviors for silly reasons.
     /// </summary>
     public partial class MainWindow : Window
     {
@@ -58,7 +63,7 @@ namespace TotalDomination
         }
         #endregion
 
-        #region Handlers for major events 
+        #region Startup/closing events 
 
         // Calls the view model's initializer
         private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
@@ -69,7 +74,7 @@ namespace TotalDomination
             }
         }
 
-        // Saves data on exit
+        // Calls the view model to save data on exit
         private async void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             if (_readyToBeClosed)

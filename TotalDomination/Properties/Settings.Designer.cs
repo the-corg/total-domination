@@ -35,21 +35,51 @@ namespace TotalDomination.Properties {
             }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("4")]
         public int NewDayStart {
             get {
                 return ((int)(this["NewDayStart"]));
             }
+            set {
+                this["NewDayStart"] = value;
+            }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("3")]
         public int BackupsCount {
             get {
                 return ((int)(this["BackupsCount"]));
+            }
+            set {
+                this["BackupsCount"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("2")]
+        public int TodosPerDay {
+            get {
+                return ((int)(this["TodosPerDay"]));
+            }
+            set {
+                this["TodosPerDay"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("874")]
+        public int ToolTipMaxWidth {
+            get {
+                return ((int)(this["ToolTipMaxWidth"]));
+            }
+            set {
+                this["ToolTipMaxWidth"] = value;
             }
         }
     }

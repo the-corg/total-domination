@@ -9,6 +9,8 @@ namespace TotalDomination.Utilities
     {
 
         #region Private fields 
+        // target number of to-do items per day
+        private readonly int _todosPerDay = Settings.Default.TodosPerDay;
         // delta x for the color interpolation
         private double _delta;
         // the sum of frequencies of all to-do items
@@ -54,16 +56,20 @@ namespace TotalDomination.Utilities
             if (daysSinceDone <= 0)
                 return 0;
 
-            int days = daysSinceDone;
+            // How many to-dos with base frequency of 1 should have been done 
+            int plannedValue = daysSinceDone * _todosPerDay;
 
-            if (days > TotalFrequency)
+            if (plannedValue > TotalFrequency)
             {
                 // Urgency tier 1
-                days = 2 * TotalFrequency - daysSinceDone + 2;
+                // The green color component should be decreasing here
+                // along the same curve that was used to calculate the growth of
+                // the red color component for urgency tier 0
+                plannedValue = 2 * TotalFrequency - plannedValue + 2;
             }
 
             // -(x-3)^2 + 9, where x changes from 0 to 2, hence 2.0 in _delta
-            var xminus3 = (days - 1) * _delta - 3;
+            var xminus3 = (plannedValue - 1) * _delta - 3;
             var quadraticCurveValue = 255.0 * (9.0 - xminus3 * xminus3) / 8.0;
 
             return (byte)quadraticCurveValue;
@@ -80,7 +86,7 @@ namespace TotalDomination.Utilities
             if (TotalFrequency == 0)
                 return -1;
 
-            return (daysSinceDone - 1) / TotalFrequency;
+            return (daysSinceDone * _todosPerDay - 1)  / TotalFrequency;
         }
         #endregion
 

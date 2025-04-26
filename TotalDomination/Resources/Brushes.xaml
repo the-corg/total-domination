@@ -1,8 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    
-    <SolidColorBrush Color="#d2691e" x:Key="BurntOrange"/>
     <SolidColorBrush Color="#ff5b00" x:Key="Fire"/>
     <SolidColorBrush Color="#ffb90f" x:Key="Gold"/>
 

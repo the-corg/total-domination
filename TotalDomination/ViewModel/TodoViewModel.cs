@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Media;
 using TotalDomination.Model;
+using TotalDomination.Properties;
 using TotalDomination.Utilities;
 
 namespace TotalDomination.ViewModel
@@ -43,47 +44,76 @@ namespace TotalDomination.ViewModel
             get
             {
                 int datesCount = DoneDates.Count;
-                string s = Title + "\nAdded on " + Added;
-                s += "\nFrequency: " + Frequency + " out of " + _calculations.TotalFrequency;
+                int todosPerDay = Settings.Default.TodosPerDay;
+                double percentage = (Frequency * 100.0) / _calculations.TotalFrequency;
+                string result = Title + "\nAdded on " + Added + "\n";
 
-                if (datesCount > 1 || (datesCount == 1 && !IsDone) )
+                List<string> s = []; // Collects string parts
+                List<int> toEqualize = []; // Collects indices of string parts that need length equalization
+                s.Add("\nFrequency: " + Frequency * todosPerDay + "/" + _calculations.TotalFrequency + " at " + todosPerDay + " tasks/day");
+                toEqualize.Add(s.Count - 1);
+                s.Add(" | " + percentage.ToString("F1") + "% of all tasks\n");
+
+                if (datesCount > 1 || (datesCount == 1 && !IsDone))
                 {
-                    s += "\n\nPreviously done on " + LastDone;
-                    s += "\nDays since last done: " + DaysSinceDone;
+                    s.Add("\nPreviously done: " + DaysSinceDone + " day" + (DaysSinceDone != 1 ? "s" : "") + " ago");
+                    toEqualize.Add(s.Count - 1);
+                    s.Add(" | " + LastDone + "\n");
                 }
-                s += "\n\nTotal times done previously: " + (IsDone ? datesCount - 1 : datesCount);
+
+                s.Add("\nTimes done previously: " + (IsDone ? datesCount - 1 : datesCount));
 
                 if (IsDone)
                 {
                     if (_averageDaysIfDoneToday >= 0)
-                        s += "\nAverage days in between: " + _averageDaysIfDoneToday.ToString("F1");
+                    {
+                        s.Add("\nAverage days in between: " + _averageDaysIfDoneToday.ToString("F1"));
+                        toEqualize.Add(s.Count - 1);
+                    }
                     if (_averageDaysPreviously >= 0)
-                        s += " (previously: " + _averageDaysPreviously.ToString("F1") + ")";
+                        s.Add(" | Previously: " + _averageDaysPreviously.ToString("F1"));
                     if (_maximumDaysIfDoneToday >= 0)
-                        s += "\nMaximum days in between: " + _maximumDaysIfDoneToday;
+                    {
+                        s.Add("\nMaximum days in between: " + _maximumDaysIfDoneToday);
+                        toEqualize.Add(s.Count - 1);
+                    }
                     if (_maximumDaysPreviously >= 0)
-                        s += " (previously: " + _maximumDaysPreviously + ")";
+                        s.Add(" | Previously: " + _maximumDaysPreviously);
                 }
                 else
                 {
                     if (_averageDaysPreviously >= 0)
                     {
-                        s += "\nAverage days in between: " + _averageDaysPreviously.ToString("F1");
-                        s += " (if done today: " + _averageDaysIfDoneToday.ToString("F1") + ")";
+                        s.Add("\nAverage days in between: " + _averageDaysPreviously.ToString("F1"));
+                        toEqualize.Add(s.Count - 1);
+                        s.Add(" | If done today: " + _averageDaysIfDoneToday.ToString("F1"));
                     }
                     if (_maximumDaysPreviously >= 0)
                     {
-                        s += "\nMaximum days in between: " + _maximumDaysPreviously;
-                        s += " (if done today: " + _maximumDaysIfDoneToday + ")";
+                        s.Add("\nMaximum days in between: " + _maximumDaysPreviously);
+                        toEqualize.Add(s.Count - 1);
+                        s.Add(" | If done today: " + _maximumDaysIfDoneToday);
                     }
                 }
 
+                // Equalize string lengths
+                var maxlength = toEqualize.Select(x => s[x].Length).Max();
+                for (int i = 0; i < toEqualize.Count; i++) 
+                    while (s[toEqualize[i]].Length < maxlength) 
+                        s[toEqualize[i]] += " ";
+
+                result += string.Join("", s);
+
                 if (datesCount > 1 || (datesCount == 1 && !IsDone))
                 {
-                    s += "\n\nHistory:\n" + string.Join("   ", DoneDates./*SkipLast(IsDone ? 1 : 0).*/Select(x => x.ToShortDateString()));
+                    result += "\n\nHistory:\n" + string.Join("  ", DoneDates.Select(x => x.ToShortDateString()));
                 }
-                
-                return s;
+
+                // TODO: remove! (debug code)
+                // result += "\n\nTier: " + _calculations.UrgencyTier(DaysSinceDone);
+                // result += "\nColor: " + ColorBrush.Color.R + " " + ColorBrush.Color.G + " " + ColorBrush.Color.B;
+
+                return result;
             }
         }
 

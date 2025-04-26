@@ -160,6 +160,8 @@ namespace TotalDomination.ViewModel
                 if (matchingTodo is not null)
                 {
                     // There's already such a to-do item in the complete list
+                    // TODO: remove this! (debug code)
+                    // matchingTodo.DoneDates[matchingTodo.DoneDates.Count - 1] = matchingTodo.DoneDates[matchingTodo.DoneDates.Count - 1].AddDays(-1);
 
                     // Update frequency, if needed
                     if (matchingTodo.Frequency != _currentList[i].Frequency)

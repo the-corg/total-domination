@@ -5,11 +5,17 @@
     <Setting Name="TodoListFile" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="NewDayStart" Type="System.Int32" Scope="Application">
+    <Setting Name="NewDayStart" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">4</Value>
     </Setting>
-    <Setting Name="BackupsCount" Type="System.Int32" Scope="Application">
+    <Setting Name="BackupsCount" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">3</Value>
+    </Setting>
+    <Setting Name="TodosPerDay" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">2</Value>
+    </Setting>
+    <Setting Name="ToolTipMaxWidth" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">874</Value>
     </Setting>
   </Settings>
 </SettingsFile>
