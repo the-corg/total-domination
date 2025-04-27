@@ -9,8 +9,7 @@ namespace TotalDomination.Utilities
     {
 
         #region Private fields 
-        // target number of to-do items per day
-        private readonly int _todosPerDay = Settings.Default.TodosPerDay;
+
         // delta x for the color interpolation
         private double _delta;
         // the sum of frequencies of all to-do items
@@ -19,7 +18,7 @@ namespace TotalDomination.Utilities
         #endregion
 
 
-        #region Properties with shared data
+        #region Public properties 
 
         /// <summary>
         /// The sum of frequencies of all to-do items
@@ -44,49 +43,45 @@ namespace TotalDomination.Utilities
 
         /// <summary>
         /// Calculates the interpolated value for a color component 
-        /// based on the number of days since the to-do item was last done.
+        /// based on the "urgency" of a to-do item.
         /// Uses a quadratic curve to approximate color change
         /// (using ScRGB moved away from green and red too quickly, and conversely,
         /// linearly changing normal sRGB stayed with red and green far too long)
         /// </summary>
-        /// <param name="daysSinceDone">Number of days since the to-do item was last done</param>
+        /// <param name="urgency">Urgency of the to-do item</param>
         /// <returns>Value for one color component</returns>
-        public byte InterpolatedColorValue(int daysSinceDone)
+        public byte InterpolatedColorValue(int urgency)
         {
-            if (daysSinceDone <= 0)
+            if (urgency <= 0)
                 return 0;
 
-            // How many to-dos with base frequency of 1 should have been done 
-            int plannedValue = daysSinceDone * _todosPerDay;
-
-            if (plannedValue > TotalFrequency)
+            if (urgency > TotalFrequency)
             {
                 // Urgency tier 1
                 // The green color component should be decreasing here
                 // along the same curve that was used to calculate the growth of
                 // the red color component for urgency tier 0
-                plannedValue = 2 * TotalFrequency - plannedValue + 2;
+                urgency = 2 * TotalFrequency - urgency + 2;
             }
 
             // -(x-3)^2 + 9, where x changes from 0 to 2, hence 2.0 in _delta
-            var xminus3 = (plannedValue - 1) * _delta - 3;
+            var xminus3 = (urgency - 1) * _delta - 3;
             var quadraticCurveValue = 255.0 * (9.0 - xminus3 * xminus3) / 8.0;
 
             return (byte)quadraticCurveValue;
         }
 
         /// <summary>
-        /// Calculates the "urgency tier" based on the number of days 
-        /// since the to-do item was last done
+        /// Calculates the "urgency tier"
         /// </summary>
-        /// <param name="daysSinceDone">Number of days since the to-do item was last done</param>
+        /// <param name="urgency">Urgency of the to-do item</param>
         /// <returns>The urgency tier (0 means not urgent at all)</returns>
-        public int UrgencyTier(int daysSinceDone)
+        public int UrgencyTier(int urgency)
         {
             if (TotalFrequency == 0)
                 return -1;
 
-            return (daysSinceDone * _todosPerDay - 1)  / TotalFrequency;
+            return (urgency - 1)  / TotalFrequency;
         }
         #endregion
 

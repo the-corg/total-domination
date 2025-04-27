@@ -2,6 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:prop="clr-namespace:TotalDomination.Properties">
 
+    <!-- ToolTip style  -->
     <Style TargetType="ToolTip">
         <Setter Property="Background" Value="{StaticResource ToolTipBackground}"/>
         <Setter Property="Foreground" Value="{StaticResource TitleBarGray}"/>
@@ -97,6 +98,7 @@
 
     <!-- CheckBoxes in ListBox -->
     <Style TargetType="CheckBox">
+        <!-- Strikethrough style for completed to-dos -->
         <Style.Resources>
             <Style TargetType="TextBlock">
                 <Style.Triggers>
@@ -116,18 +118,20 @@
                 </Style.Triggers>
             </Style>
         </Style.Resources>
+        <!-- Bindings -->
         <Setter Property="Foreground" Value="{Binding ColorBrush}"/>
         <Setter Property="FontWeight" Value="{Binding FontWeight}"/>
         <Setter Property="Command" Value="{Binding DataContext.DoneCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"/>
         <Setter Property="CommandParameter" Value="{Binding IsDone}"/>
         <Setter Property="ToolTip" Value="{Binding Info}"/>
+        <!-- Static values -->
         <Setter Property="ToolTipService.InitialShowDelay" Value="500"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="Background" Value="{StaticResource OptionMark.Static.Background}"/>
         <Setter Property="BorderBrush" Value="{StaticResource OptionMark.Static.Border}"/>
         <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="Margin" Value="0 2"/>
-
+        <Setter Property="Padding" Value="6 -1 0 2"/>
+        <!-- Control template -->
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="CheckBox">
@@ -136,6 +140,7 @@
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
+                        <!-- Box of CheckBox -->
                         <Viewbox Width="{StaticResource CheckBoxSize}">
                             <Border x:Name="checkBoxBorder" 
                                 Background="{TemplateBinding Background}" 
@@ -150,14 +155,12 @@
                                 </Grid>
                             </Border>
                         </Viewbox>
+                        <!-- Content of CheckBox -->
                         <ContentPresenter x:Name="contentPresenter" Grid.Column="1" Focusable="False" Margin="{TemplateBinding Padding}" 
                                           HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
                                           VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                     </Grid>
                     <ControlTemplate.Triggers>
-                        <Trigger Property="HasContent" Value="true">
-                            <Setter Property="Padding" Value="6 -3 0 0"/>
-                        </Trigger>
                         <Trigger Property="IsMouseOver" Value="true">
                             <Setter Property="Background" TargetName="checkBoxBorder" Value="{StaticResource OptionMark.MouseOver.Background}"/>
                             <Setter Property="BorderBrush" TargetName="checkBoxBorder" Value="{StaticResource OptionMark.MouseOver.Border}"/>
@@ -180,7 +183,7 @@
         </Setter>
     </Style>
 
-    <!-- Success message -->
+    <!-- Celebration message styles -->
     <Style TargetType="Border" x:Key="SuccessMessageBorder">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="IsHitTestVisible" Value="False"/>

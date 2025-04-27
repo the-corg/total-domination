@@ -42,7 +42,7 @@
             </CollectionViewSource.LiveSortingProperties>
             <CollectionViewSource.SortDescriptions>
                 <scm:SortDescription PropertyName="IsDone" Direction="Ascending"/>
-                <scm:SortDescription PropertyName="DaysSinceDone" Direction="Descending"/>
+                <scm:SortDescription PropertyName="Urgency" Direction="Descending"/>
                 <scm:SortDescription PropertyName="Frequency" Direction="Descending"/>
                 <scm:SortDescription PropertyName="Title" Direction="Ascending"/>
             </CollectionViewSource.SortDescriptions>

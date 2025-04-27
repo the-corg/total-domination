@@ -15,6 +15,9 @@ namespace TotalDomination.ViewModel
 
         private readonly Calculations _calculations;
 
+        // target number of to-do items per day
+        private readonly int _todosPerDay = Settings.Default.TodosPerDay;
+
         private Todo _model;
         private bool _isDone;
         private double _averageDaysPreviously = -1;
@@ -44,15 +47,23 @@ namespace TotalDomination.ViewModel
             get
             {
                 int datesCount = DoneDates.Count;
-                int todosPerDay = Settings.Default.TodosPerDay;
                 double percentage = (Frequency * 100.0) / _calculations.TotalFrequency;
                 string result = Title + "\nAdded on " + Added + "\n";
 
                 List<string> s = []; // Collects string parts
                 List<int> toEqualize = []; // Collects indices of string parts that need length equalization
-                s.Add("\nFrequency: " + Frequency * todosPerDay + "/" + _calculations.TotalFrequency + " at " + todosPerDay + " tasks/day");
+
+                s.Add("\nBase frequency: " + Frequency + "/" + _calculations.TotalFrequency);
                 toEqualize.Add(s.Count - 1);
-                s.Add(" | " + percentage.ToString("F1") + "% of all tasks\n");
+                s.Add(" | " + percentage.ToString("F1") + "% of all tasks");
+
+                s.Add("\nUrgency growth: " + Frequency * _todosPerDay + " per day ");
+                toEqualize.Add(s.Count - 1);
+                s.Add(" | at " + _todosPerDay + " tasks per day\n");
+
+                s.Add("\nCurrent urgency: " + Urgency);
+                toEqualize.Add(s.Count - 1);
+                s.Add(" | Tier " + _calculations.UrgencyTier(Urgency));
 
                 if (datesCount > 1 || (datesCount == 1 && !IsDone))
                 {
@@ -126,7 +137,7 @@ namespace TotalDomination.ViewModel
             get
             {
                 string fires = "";
-                int urgencyTier = _calculations.UrgencyTier(DaysSinceDone);
+                int urgencyTier = _calculations.UrgencyTier(Urgency);
 
                 for (int i = 0; i < urgencyTier - 1; i++)
                     fires += "🔥";
@@ -184,6 +195,11 @@ namespace TotalDomination.ViewModel
         public int DaysSinceDone => Calculations.GetTodayWithMidnightShift().DayNumber - LastDone.DayNumber;
 
         /// <summary>
+        /// The urgency of the to-do item
+        /// </summary>
+        public int Urgency => DaysSinceDone * Frequency * _todosPerDay;
+
+        /// <summary>
         /// Shows whether the To-do item was done today
         /// </summary>
         public bool IsDone
@@ -222,15 +238,15 @@ namespace TotalDomination.ViewModel
         {
             get
             {
-                int urgencyTier = _calculations.UrgencyTier(DaysSinceDone);
+                int urgencyTier = _calculations.UrgencyTier(Urgency);
                 Color color;
 
                 if (urgencyTier == -1)
                     color = new Color() { A = 255, R = 32, G = 32, B = 32 };
                 else if (urgencyTier == 0)
-                    color = new Color() { A = 255, R = _calculations.InterpolatedColorValue(DaysSinceDone), G = 255, B = 0 };
+                    color = new Color() { A = 255, R = _calculations.InterpolatedColorValue(Urgency), G = 255, B = 0 };
                 else if (urgencyTier == 1)
-                    color = new Color() { A = 255, R = 255, G = _calculations.InterpolatedColorValue(DaysSinceDone), B = 0 };
+                    color = new Color() { A = 255, R = 255, G = _calculations.InterpolatedColorValue(Urgency), B = 0 };
                 else
                     color = new Color() { A = 255, R = 255, G = 0, B = 0 };
 
@@ -245,7 +261,7 @@ namespace TotalDomination.ViewModel
         {
             get
             {
-                int urgencyTier = _calculations.UrgencyTier(DaysSinceDone);
+                int urgencyTier = _calculations.UrgencyTier(Urgency);
 
                 if (urgencyTier < 3)
                     return FontWeights.Normal;

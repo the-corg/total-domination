@@ -137,6 +137,7 @@ namespace TotalDomination.Data
                     File.Move(newerBackupPath, olderBackupPath, overwrite: true);
             }
 
+            // Make backup of the json file itself
             if (File.Exists(_jsonFilePath))
                 File.Move(_jsonFilePath, _backupFilePath + "01", overwrite: true);
         }
