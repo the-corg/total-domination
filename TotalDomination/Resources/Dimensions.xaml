@@ -2,7 +2,8 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
                     xmlns:sys="clr-namespace:System;assembly=netstandard">
 
-    <sys:Double x:Key="TitleBarHeight">32</sys:Double>
+    <sys:Double x:Key="TitleBarHeight">30</sys:Double>
+    <sys:Double x:Key="TitleBarButtonSize">26</sys:Double>
 
     <sys:Double x:Key="CheckBoxSize">20</sys:Double>
     
@@ -10,6 +11,6 @@
     <sys:Double x:Key="ListFontSize">20</sys:Double>
     <sys:Double x:Key="FileButtonFontSize">16</sys:Double>
     <sys:Double x:Key="ToolTipFontSize">17</sys:Double>
-    <sys:Double x:Key="TitleBarFontSize">20</sys:Double>
+    <sys:Double x:Key="TitleBarFontSize">18</sys:Double>
     
 </ResourceDictionary>

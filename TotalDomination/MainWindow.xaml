@@ -9,7 +9,7 @@
         xmlns:sys="clr-namespace:System;assembly=netstandard"
         mc:Ignorable="d"
         Title="Total Domination" 
-        MinHeight="256" MinWidth="256"
+        MinHeight="100" MinWidth="200"
         WindowStartupLocation="CenterScreen"
         StateChanged="Window_StateChanged"
         FontSize="24" FontFamily="Segoe UI"
@@ -79,7 +79,7 @@
                 <Button Content="🗖" Style="{StaticResource TitleBarButton}"
                         Command="{x:Static SystemCommands.MaximizeWindowCommand}"
                         Visibility="Visible" x:Name="MaximizeButton"/>
-                <Button Content="❌" Style="{StaticResource TitleBarButton}"
+                <Button Content="🗙" Style="{StaticResource TitleBarButton}"
                         Command="{x:Static SystemCommands.CloseWindowCommand}"/>
             </StackPanel>
         </Grid>

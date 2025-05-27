@@ -26,12 +26,12 @@
     <!-- Title bar styles -->
     <Style TargetType="Button" x:Key="TitleBarButton">
         <Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True"/>
-        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Top"/>
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Foreground" Value="{StaticResource TitleBarGray}"/>
         <Setter Property="BorderBrush" Value="Transparent"/>
-        <Setter Property="Width" Value="{StaticResource TitleBarHeight}"/>
-        <Setter Property="Height" Value="{StaticResource TitleBarHeight}"/>
+        <Setter Property="Width" Value="{StaticResource TitleBarButtonSize}"/>
+        <Setter Property="Height" Value="{StaticResource TitleBarButtonSize}"/>
         <Setter Property="FontSize" Value="{StaticResource TitleBarFontSize}"/>
         <Setter Property="Template">
             <Setter.Value>
@@ -55,12 +55,12 @@
     </Style>
 
     <Style TargetType="Button" x:Key="OpenFileButton" BasedOn="{StaticResource TitleBarButton}">
-        <Setter Property="Padding" Value="5 -2 5 0"/>
-        <Setter Property="Margin" Value="0 4 0 0"/>
+        <Setter Property="Padding" Value="3 -2 3 0"/>
+        <Setter Property="Margin" Value="0 7 0 0"/>
         <Setter Property="Width" Value="Auto"/>
         <Setter Property="Height" Value="Auto"/>
         <Setter Property="FontWeight" Value="Normal"/>
-        <Setter Property="ToolTip" Value="Open File"/>
+        <Setter Property="ToolTip" Value="{Binding TodoFilePath}"/>
         <Setter Property="ToolTipService.InitialShowDelay" Value="500"/>
         <Setter Property="FontSize" Value="{StaticResource FileButtonFontSize}"/>
         <Setter Property="Foreground" Value="{StaticResource TitleThird}"/>

@@ -81,7 +81,7 @@ namespace TotalDomination.Utilities
             if (TotalFrequency == 0)
                 return -1;
 
-            return (urgency - 1)  / TotalFrequency;
+            return (urgency - 1) / TotalFrequency;
         }
         #endregion
 
@@ -105,6 +105,16 @@ namespace TotalDomination.Utilities
             }
 
             return today;
+        }
+
+        /// <summary>
+        /// Recursively computes the greatest common divisor of two numbers
+        /// using the Euclidean algorithm
+        /// </summary>
+        /// <returns>The greatest common divisor of <paramref name="a"/> and <paramref name="b"/></returns>
+        public static int GreatestCommonDivisor(int a, int b)
+        {
+            return b == 0 ? Math.Abs(a) : GreatestCommonDivisor(b, a % b);
         }
         #endregion
     }

@@ -58,6 +58,7 @@ namespace TotalDomination.ViewModel
             {
                 MessageBox.Show("Could not find file: " + _todoFilePath, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 _todoFilePath = "";
+                OnPropertyChanged(nameof(TodoFilePath));
                 OnPropertyChanged(nameof(TodoFileName));
             }
 
@@ -84,6 +85,11 @@ namespace TotalDomination.ViewModel
         /// Name of the To-do list file
         /// </summary>
         public string TodoFileName => string.IsNullOrWhiteSpace(_todoFilePath) ? "Open File" : Path.GetFileNameWithoutExtension(_todoFilePath);
+
+        /// <summary>
+        /// Full path to the To-do list file
+        /// </summary>
+        public string TodoFilePath => string.IsNullOrWhiteSpace(_todoFilePath) ? "Open File" : _todoFilePath;
 
         /// <summary>
         /// Shows whether celebration of success would be appropriate at the moment
@@ -118,6 +124,7 @@ namespace TotalDomination.ViewModel
             _todoFilePath = newTodoFilePath;
             Settings.Default.TodoListFile = _todoFilePath;
             Settings.Default.Save();
+            OnPropertyChanged(nameof(TodoFilePath));
             OnPropertyChanged(nameof(TodoFileName));
 
             await LoadAndProcessCurrentListAsync();

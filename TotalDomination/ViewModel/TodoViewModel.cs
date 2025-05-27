@@ -49,19 +49,24 @@ namespace TotalDomination.ViewModel
                 int datesCount = DoneDates.Count;
                 double percentage = (Frequency * 100.0) / _calculations.TotalFrequency;
                 string result = Title + "\nAdded on " + Added + "\n";
+                int urgencyGrowth = Frequency * _todosPerDay;
+                int greatestCommonDivisor = Calculations.GreatestCommonDivisor(urgencyGrowth, _calculations.TotalFrequency);
+                int realFrequencyNumerator = urgencyGrowth / greatestCommonDivisor;
+                int realFrequencyDenominator = _calculations.TotalFrequency / greatestCommonDivisor;
 
                 List<string> s = []; // Collects string parts
                 List<int> toEqualize = []; // Collects indices of string parts that need length equalization
 
-                s.Add("\nBase frequency: " + Frequency + "/" + _calculations.TotalFrequency);
+                s.Add("\nReal frequency: " + (realFrequencyNumerator == 1 ? "once" : realFrequencyNumerator + " times") + " per " + realFrequencyDenominator + " days");
+                s.Add("\nBase frequency: " + Frequency);
                 toEqualize.Add(s.Count - 1);
                 s.Add(" | " + percentage.ToString("F1") + "% of all tasks");
 
-                s.Add("\nUrgency growth: " + Frequency * _todosPerDay + " per day ");
+                s.Add("\nUrgency growth: " + urgencyGrowth + " per day");
                 toEqualize.Add(s.Count - 1);
                 s.Add(" | at " + _todosPerDay + " tasks per day\n");
 
-                s.Add("\nCurrent urgency: " + Urgency);
+                s.Add("\nCurrent urgency: " + Urgency + " / " + _calculations.TotalFrequency);
                 toEqualize.Add(s.Count - 1);
                 s.Add(" | Tier " + _calculations.UrgencyTier(Urgency));
 
