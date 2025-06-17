@@ -116,6 +116,21 @@ namespace TotalDomination.Utilities
         {
             return b == 0 ? Math.Abs(a) : GreatestCommonDivisor(b, a % b);
         }
+
+        
+        /// <summary>
+        /// Computes the median of the list items
+        /// </summary>
+        /// <param name="list">List of integers</param>
+        /// <returns>The median of the list items</returns>
+        public static double Median(List<int> list)
+        {
+            var sorted = list.OrderBy(x => x).ToList();
+
+            double middle = (sorted.Count - 1) / 2.0;
+
+            return (sorted[(int)middle] + sorted[(int)(middle + 0.5)]) / 2.0;
+        }
         #endregion
     }
 }
